@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTINEL-CHAIN | AI & Blockchain Border Surveillance Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Navigation & System Status HUD -->
+  <header class="hud-header">
+    <div class="header-left">
+      <div class="brand-logo">
+        <i class="fa-solid fa-shield-halved brand-icon"></i>
+        <div>
+          <h1>SENTINEL-CHAIN</h1>
+          <span class="sub-brand">AI-DRIVEN DECENTRALIZED BORDER SURVEILLANCE & FORENSICS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud-telemetry">
+      <div class="telemetry-pill">
+        <span class="label">CCTV SOURCE</span>
+        <span class="val cyan"><i class="fa-solid fa-video"></i> CAM-001 (REGISTERED)</span>
+      </div>
+      <div class="telemetry-pill">
+        <span class="label">AI MODEL</span>
+        <span class="val green"><i class="fa-solid fa-microchip"></i> YOLOv8-LLVIP (HASH VERIFIED)</span>
+      </div>
+      <div class="telemetry-pill">
+        <span class="label">CONSENSUS (3 NODES)</span>
+        <span class="val green" id="hudConsensusStatus"><i class="fa-solid fa-circle-nodes"></i> HEALTHY (100%)</span>
+      </div>
+      <div class="telemetry-pill live-indicator">
+        <span class="pulse-dot"></span>
+        <span class="val">LIVE SYSTEM</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Metrics Bar -->
+  <section class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon red"><i class="fa-solid fa-person-burst"></i></div>
+      <div class="metric-info">
+        <h3 id="statTotalIntrusions">0</h3>
+        <p id="statTotalIntrusionsLabel">Total Intrusions (De-duplicated)</p>
+      </div>
+      <div class="metric-badge alert" id="statIntrusionBadge">Anti-Spam Active</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon cyan"><i class="fa-solid fa-cube"></i></div>
+      <div class="metric-info">
+        <h3 id="statChainHeight">0</h3>
+        <p>Blockchain Blocks Mined</p>
+      </div>
+      <div class="metric-badge">Tamper-Evident</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon purple"><i class="fa-solid fa-network-wired"></i></div>
+      <div class="metric-info">
+        <h3>3 NODES</h3>
+        <p>Border Police • State Police • Judiciary</p>
+      </div>
+      <div class="metric-badge">Decentralized</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon green"><i class="fa-solid fa-user-shield"></i></div>
+      <div class="metric-info">
+        <h3 id="statAuthorizedPersonnel">0</h3>
+        <p>Authorized Personnel (Exempt)</p>
+      </div>
+      <div class="metric-badge green">Cybersecurity PKI</div>
+    </div>
+  </section>
+
+  <!-- Active Breach Alert Banner (Dynamic) -->
+  <div class="breach-alert-bar" id="breachAlertBar" style="display: none;">
+    <div class="alert-content">
+      <i class="fa-solid fa-triangle-exclamation blink-fast"></i>
+      <span id="breachAlertText">PERIMETER BREACH ACTIVE IN SECTOR-4 RESTRICTED ZONE</span>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <nav class="hud-tabs">
+    <button class="tab-btn active" data-tab="tabSurveillance"><i class="fa-solid fa-camera"></i> Live Surveillance AI</button>
+    <button class="tab-btn" data-tab="tabEvidence"><i class="fa-solid fa-images"></i> Forensic Evidence & Chain</button>
+    <button class="tab-btn" data-tab="tabBlockchain"><i class="fa-solid fa-cubes"></i> 3-Node Blockchain Ledger</button>
+    <button class="tab-btn" data-tab="tabAudit"><i class="fa-solid fa-clipboard-check"></i> Audit Logs & Tamper Detection</button>
+    <button class="tab-btn" data-tab="tabCybersecurity"><i class="fa-solid fa-id-badge"></i> Cybersecurity & Personnel Access</button>
+  </nav>
+
+  <!-- Tab Contents -->
+  <main class="tab-container">
+
+    <!-- 1. LIVE SURVEILLANCE TAB -->
+    <section id="tabSurveillance" class="tab-content active">
+      <div class="surveillance-layout">
+        <!-- Video Player Section -->
+        <div class="video-panel glass-panel">
+          <div class="panel-header">
+            <h2><i class="fa-solid fa-satellite-dish"></i> CCTV STREAM (RESTRICTED ZONE &amp; BYTETRACK)</h2>
+            <div class="stream-toggles">
+              <button class="btn btn-small active" id="btnPlayAnnotated"><i class="fa-solid fa-brain"></i> Live AI Surveillance</button>
+              <button class="btn btn-small" id="btnPlayRaw"><i class="fa-solid fa-video"></i> Raw CCTV</button>
+              <button class="btn btn-small" id="btnPlayPlayer"><i class="fa-solid fa-film"></i> Video Player (AI MP4)</button>
+              <button class="btn btn-small" id="btnPlayRawPlayer"><i class="fa-solid fa-play"></i> Video Player (Raw MP4)</button>
+              <button class="btn btn-primary btn-small" id="btnReprocessVideo" onclick="reprocessSurveillanceVideo()"><i class="fa-solid fa-arrows-rotate"></i> Re-scan Video for Intrusions</button>
+            </div>
+          </div>
+          <div class="video-wrapper">
+            <img id="surveillanceStream" src="/video/stream/annotated" alt="Live Border Surveillance CCTV Feed">
+            <video id="surveillanceVideo" controls loop playsinline muted preload="auto" style="display: none;">
+              Your browser does not support HTML5 video.
+            </video>
+          </div>
+          <div class="video-telemetry-footer">
+            <div class="tag green"><i class="fa-solid fa-check-double"></i> BYTETRACK ID PERSISTENCE ON</div>
+            <div class="tag red"><i class="fa-solid fa-ban"></i> RESTRICTED ZONE POLYGON ACTIVE</div>
+            <div class="tag cyan"><i class="fa-solid fa-key"></i> FRAMES DIGITALLY SIGNED (ED25519)</div>
+          </div>
+        </div>
+
+        <!-- Realtime Live Event Feed -->
+        <div class="sidebar-panel glass-panel">
+          <div class="panel-header">
+            <h3><i class="fa-solid fa-bell"></i> REAL-TIME INTRUSION FEED</h3>
+            <span class="badge" id="eventBadgeCount">0 Events</span>
+          </div>
+          <p class="panel-desc">Only first intrusion entry triggers alert. Subsequent dwell in zone is de-duplicated.</p>
+          <div class="event-feed-list" id="eventFeedList">
+            <!-- Events populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. FORENSIC EVIDENCE TAB -->
+    <section id="tabEvidence" class="tab-content">
+      <div class="glass-panel">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-fingerprint"></i> FORENSIC EVIDENCE VAULT (CHAIN OF CUSTODY)</h2>
+          <button class="btn btn-outline" onclick="loadIntrusionEvents()"><i class="fa-solid fa-rotate"></i> Refresh Vault</button>
+        </div>
+        <p class="panel-desc">Exact frames captured at the moment of intrusion, hashed with SHA-256 and signed with Camera-001 private key.</p>
+        <div class="evidence-grid" id="evidenceGrid">
+          <!-- Evidence cards populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. THREE-NODE BLOCKCHAIN TAB -->
+    <section id="tabBlockchain" class="tab-content">
+      <!-- 3 Nodes Cards -->
+      <div class="nodes-grid">
+        <div class="node-card glass-panel" id="nodeCardBP">
+          <div class="node-header">
+            <div class="node-title">
+              <i class="fa-solid fa-person-military-pointing node-icon green"></i>
+              <div>
+                <h3>Border Police Node</h3>
+                <span class="node-org">Border Security Force (BSF)</span>
+              </div>
+            </div>
+            <span class="status-indicator-dot online"></span>
+          </div>
+          <div class="node-details">
+            <div class="detail-row"><span>Role:</span><strong>CCTV Ingestion & Stream Key Auth</strong></div>
+            <div class="detail-row"><span>Port / Endpoint:</span><code>localhost:8001</code></div>
+            <div class="detail-row"><span>Chain Height:</span><strong id="bpChainHeight">0 blocks</strong></div>
+            <div class="detail-row"><span>Node Status:</span><span class="badge green" id="bpNodeStatusBadge">VALIDATOR ACTIVE</span></div>
+          </div>
+        </div>
+
+        <div class="node-card glass-panel" id="nodeCardSP">
+          <div class="node-header">
+            <div class="node-title">
+              <i class="fa-solid fa-building-shield node-icon cyan"></i>
+              <div>
+                <h3>State Police Node</h3>
+                <span class="node-org">State Police HQ</span>
+              </div>
+            </div>
+            <span class="status-indicator-dot online" id="spNodeDot"></span>
+          </div>
+          <div class="node-details">
+            <div class="detail-row"><span>Role:</span><strong>Regional Police & Audit Monitoring</strong></div>
+            <div class="detail-row"><span>Port / Endpoint:</span><code>localhost:8002</code></div>
+            <div class="detail-row"><span>Chain Height:</span><strong id="spChainHeight">0 blocks</strong></div>
+            <div class="detail-row"><span>Node Status:</span><span class="badge cyan" id="spNodeStatusBadge">CONSENSUS ACTIVE</span></div>
+          </div>
+        </div>
+
+        <div class="node-card glass-panel" id="nodeCardJD">
+          <div class="node-header">
+            <div class="node-title">
+              <i class="fa-solid fa-scale-balanced node-icon purple"></i>
+              <div>
+                <h3>Judiciary Node</h3>
+                <span class="node-org">High Court / Judicial Tribunal</span>
+              </div>
+            </div>
+            <span class="status-indicator-dot online" id="jdNodeDot"></span>
+          </div>
+          <div class="node-details">
+            <div class="detail-row"><span>Role:</span><strong>Model Certification & Forensics Scrutiny</strong></div>
+            <div class="detail-row"><span>Port / Endpoint:</span><code>localhost:8003</code></div>
+            <div class="detail-row"><span>Chain Height:</span><strong id="jdChainHeight">0 blocks</strong></div>
+            <div class="detail-row"><span>Node Status:</span><span class="badge purple" id="jdNodeStatusBadge">LEGAL ADMISSIBILITY</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blockchain Explorer -->
+      <div class="glass-panel block-explorer-panel">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-cubes-stacked"></i> IMMUTABLE BLOCKCHAIN EXPLORER</h2>
+          <div class="chain-status-badge">
+            <i class="fa-solid fa-shield-check"></i> <span id="chainIntegrityStatus">Cryptographic Chain Intact</span>
+          </div>
+        </div>
+
+        <!-- Node Ledger Selector -->
+        <div class="node-switcher-group" style="display:flex; gap:8px; align-items:center; margin-bottom:14px; flex-wrap:wrap;">
+          <span style="font-size:0.8rem; color:#8b9bb4; font-family:var(--font-mono);"><i class="fa-solid fa-server"></i> Inspect Node Ledger:</span>
+          <button class="btn btn-small btn-primary" id="btnChainBP" onclick="selectBlockchainNode('border_police')">Border Police Node (BSF)</button>
+          <button class="btn btn-small btn-outline" id="btnChainSP" onclick="selectBlockchainNode('state_police')">State Police Node (HQ)</button>
+          <button class="btn btn-small btn-outline" id="btnChainJD" onclick="selectBlockchainNode('judiciary')">Judiciary Node (Tribunal)</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="hud-table" id="blockTable">
+            <thead>
+              <tr>
+                <th>Height</th>
+                <th>Block Hash</th>
+                <th>Merkle Root</th>
+                <th>Validator</th>
+                <th>Transactions</th>
+                <th>Timestamp</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="blockTableBody">
+              <!-- Blocks loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. AUDIT LOGS & TAMPER DETECTION TAB -->
+    <section id="tabAudit" class="tab-content">
+      <div class="glass-panel">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-clipboard-list"></i> CROSS-NODE AUDIT LOG & TRANSPARENCY</h2>
+          <div class="audit-policy-pill">
+            <i class="fa-solid fa-eye"></i> All access is replicated to Border Police, State Police & Judiciary
+          </div>
+        </div>
+
+        <!-- Tamper Simulation Box -->
+        <div class="tamper-control-box">
+          <div class="tamper-header">
+            <i class="fa-solid fa-skull-crossbones red"></i>
+            <div>
+              <h4>TAMPER DETECTION DEMONSTRATION SUITE</h4>
+              <p>Test the requirement: <em>"There should be scope to change the intrusion detected to no intrusion detected so that intrusion detection is not found that means tampering has occured in this way tampering should be."</em></p>
+            </div>
+          </div>
+
+          <!-- Primary Demonstration: Intrusion Concealment Tampering -->
+          <div class="tamper-intrusion-card" style="background:rgba(0,0,0,0.4); border:1px solid rgba(0,242,254,0.3); border-radius:6px; padding:16px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <h5 style="color:#00f2fe; font-family:var(--font-hud); font-size:0.95rem; margin:0;">
+                <i class="fa-solid fa-person-military-rifle"></i> PERIMETER INTRUSION CONCEALMENT TAMPERING
+              </h5>
+              <span class="badge" id="tamperConsensusBadge" style="font-size:0.75rem;">Consensus Monitored</span>
+            </div>
+            <p style="font-size:0.8rem; color:#8b9bb4; margin-bottom:14px;">
+              Simulate an adversary modifying the blockchain ledger on one node to change <strong>'INTRUSION DETECTED'</strong> into <strong>'NO INTRUSION DETECTED'</strong> so that intrusion detection is not found. Watch how decentralized consensus immediately catches the disparity and flags the tampering across all remaining nodes!
+            </p>
+            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+              <div style="min-width:240px;">
+                <label style="font-size:0.75rem; color:#8b9bb4; display:block; margin-bottom:4px; font-family:var(--font-mono);">Intrusion Event:</label>
+                <select id="selectTamperEvent" style="width:100%; background:#0a1121; color:#fff; border:1px solid rgba(0,242,254,0.3); padding:8px 12px; border-radius:4px; font-family:var(--font-mono); font-size:0.85rem;">
+                  <option value="INTRUSION-DET-001">INTRUSION-DET-001 (Track #3, Frame 229, 00:09.16)</option>
+                  <option value="INTRUSION-DET-002">INTRUSION-DET-002 (Track #4, Frame 248, 00:09.92)</option>
+                  <option value="INTRUSION-DET-003">INTRUSION-DET-003 (Track #5, Frame 331, 00:13.24)</option>
+                </select>
+              </div>
+              <div style="min-width:220px;">
+                <label style="font-size:0.75rem; color:#8b9bb4; display:block; margin-bottom:4px; font-family:var(--font-mono);">Node to Tamper / Attack:</label>
+                <select id="selectTamperNode" style="width:100%; background:#0a1121; color:#fff; border:1px solid rgba(0,242,254,0.3); padding:8px 12px; border-radius:4px; font-family:var(--font-mono); font-size:0.85rem;">
+                  <option value="state_police">StatePolice-Node (Regional HQ)</option>
+                  <option value="border_police">BorderPolice-Node (BSF Tactical)</option>
+                  <option value="judiciary">Judiciary-Node (Court Forensic)</option>
+                </select>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn btn-danger" onclick="simulateIntrusionConcealmentTamper()">
+                  <i class="fa-solid fa-mask"></i> Tamper: Set to 'NO INTRUSION DETECTED'
+                </button>
+                <button class="btn btn-success" onclick="restoreIntrusionConcealmentTamper()">
+                  <i class="fa-solid fa-rotate-left"></i> Restore to 'INTRUSION DETECTED'
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secondary Demonstrations -->
+          <div style="font-size:0.75rem; color:#8b9bb4; margin-bottom:8px; font-family:var(--font-mono);">ADDITIONAL INTEGRITY VERIFICATION DEMONSTRATIONS:</div>
+          <div class="tamper-buttons">
+            <button class="btn btn-outline" onclick="simulateAuditTamper()"><i class="fa-solid fa-user-secret"></i> Simulate Audit Log Tampering</button>
+            <button class="btn btn-outline" onclick="simulateEvidenceTamper()"><i class="fa-solid fa-file-excel"></i> Simulate Evidence File Tampering</button>
+            <button class="btn btn-outline" onclick="restoreIntegrity()"><i class="fa-solid fa-arrows-rotate"></i> Restore All Nodes Cryptographic State</button>
+          </div>
+          <div class="tamper-alert-result" id="tamperResultBox" style="display:none;"></div>
+        </div>
+
+        <!-- Audit Log Switcher & Access Test -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin: 16px 0 12px 0;">
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <span style="font-size:0.8rem; color:#8b9bb4; font-family:var(--font-mono);"><i class="fa-solid fa-list-check"></i> Node Audit Log:</span>
+            <button class="btn btn-small btn-primary" id="btnAuditBP" onclick="selectAuditNode('border_police')">Border Police (BSF)</button>
+            <button class="btn btn-small btn-outline" id="btnAuditSP" onclick="selectAuditNode('state_police')">State Police (HQ)</button>
+            <button class="btn btn-small btn-outline" id="btnAuditJD" onclick="selectAuditNode('judiciary')">Judiciary (Court)</button>
+          </div>
+          <div>
+            <button class="btn btn-small btn-outline" onclick="triggerAuditAccessTest()">
+              <i class="fa-solid fa-eye"></i> Test Audit Log Access Broadcast
+            </button>
+          </div>
+        </div>
+
+        <!-- Audit Log Table -->
+        <div class="table-responsive">
+          <table class="hud-table">
+            <thead>
+              <tr>
+                <th>Audit ID</th>
+                <th>Timestamp</th>
+                <th>Accessor Identity</th>
+                <th>Node</th>
+                <th>Action</th>
+                <th>Target</th>
+                <th>Entry Hash</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody">
+              <!-- Audit logs dynamically loaded -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CYBERSECURITY & AUTHORIZED PERSONNEL TAB -->
+    <section id="tabCybersecurity" class="tab-content">
+      <div class="glass-panel">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-shield-virus"></i> CYBERSECURITY ACCESS CONTROL & EXEMPTIONS</h2>
+        </div>
+        <p class="panel-desc">
+          <strong>Security Principle:</strong> <em>"Only the persons who have access here comes the cybersecurity, and if someone with access entered into restricted zone that one should not be treated as intruder."</em>
+        </p>
+
+        <div class="personnel-layout">
+          <!-- Personnel Table -->
+          <div class="personnel-table-wrapper">
+            <h3>Registered Border Patrol Personnel</h3>
+            <table class="hud-table">
+              <thead>
+                <tr>
+                  <th>Badge ID</th>
+                  <th>Name</th>
+                  <th>Rank / Role</th>
+                  <th>Assigned Track ID</th>
+                  <th>Perimeter Clearance</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="personnelTableBody">
+                <!-- Personnel loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add / Grant Clearance Form -->
+          <div class="grant-clearance-box">
+            <h3>Grant Perimeter Access Clearance</h3>
+            <form id="personnelForm" onsubmit="handleGrantClearance(event)">
+              <div class="form-group">
+                <label>Badge / Personnel ID</label>
+                <input type="text" id="inputPersonnelId" placeholder="BP-OFFICER-702" required>
+              </div>
+              <div class="form-group">
+                <label>Officer Name</label>
+                <input type="text" id="inputName" placeholder="Inspector Priya Rawat" required>
+              </div>
+              <div class="form-group">
+                <label>Rank / Designation</label>
+                <input type="text" id="inputRank" placeholder="Border Surveillance Specialist" required>
+              </div>
+              <div class="form-group">
+                <label>Assign to Track ID (for Demo)</label>
+                <input type="number" id="inputTrackId" placeholder="e.g. 4" min="1">
+              </div>
+              <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-key"></i> Grant Blockchain Clearance</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Forensic Verification Modal -->
+  <div class="modal-overlay" id="verificationModal" style="display:none;">
+    <div class="modal-box glass-panel">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-certificate cyan"></i> FORENSIC EVIDENCE VERIFICATION</h3>
+        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Forensic inspection details -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

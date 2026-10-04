@@ -1,0 +1,40 @@
+FROM python:3.11-slim
+
+# Prevent interactive prompts during package installs
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+# Install system dependencies required by OpenCV, FFmpeg, and networking
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    libgl1 \
+    libglib2.0-0 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Upgrade pip and install CPU-optimized PyTorch
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu torch torchvision
+
+# Copy requirements and install remaining Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application source code
+COPY . .
+
+# Expose backend API and streaming port
+EXPOSE 5000
+
+ENV PORT=5000 \
+    HOST=0.0.0.0 \
+    FRONTEND_URL=http://frontend:3000
+
+# Health check to ensure Flask server is responsive
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD curl -f http://localhost:5000/health || exit 1
+
+CMD ["python3", "web/server.py"]

@@ -1,0 +1,86 @@
+[
+  {
+    "audit_id": "AUDIT-REC-001",
+    "timestamp": 1700000000.0,
+    "accessor_node": "System-Genesis",
+    "accessor_identity": "System-Genesis-Service",
+    "action": "INITIALIZE_GENESIS",
+    "target_id": "GENESIS_NETWORK",
+    "status": "RECORDED",
+    "details": "Border Surveillance Blockchain Network Initialized",
+    "prev_log_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "entry_hash": "6b1436a51ef2de0bc4f0e9f288f8845dddc8320a19c904319330c93dbaf32a18"
+  },
+  {
+    "audit_id": "AUDIT-REC-002",
+    "timestamp": 1700000010.0,
+    "accessor_node": "BorderPolice-Node",
+    "accessor_identity": "BorderPolice-Node-Service",
+    "action": "CAMERA_REGISTRATION",
+    "target_id": "CAM-001",
+    "status": "RECORDED",
+    "details": "CCTV Camera CAM-001 registered with Ed25519 digital key",
+    "prev_log_hash": "6b1436a51ef2de0bc4f0e9f288f8845dddc8320a19c904319330c93dbaf32a18",
+    "entry_hash": "6d9a2dc9915269f041fe5a05ba65e5fcf234745ce9afa46a15528fd56cb80f24"
+  },
+  {
+    "audit_id": "AUDIT-REC-003",
+    "timestamp": 1700000020.0,
+    "accessor_node": "Judiciary-Node",
+    "accessor_identity": "Judiciary-Node-Service",
+    "action": "MODEL_REGISTRATION",
+    "target_id": "LLVIP-BORDER-YOLO",
+    "status": "RECORDED",
+    "details": "Model BorderGuard-YOLOv8-LLVIP anchored and certified",
+    "prev_log_hash": "6d9a2dc9915269f041fe5a05ba65e5fcf234745ce9afa46a15528fd56cb80f24",
+    "entry_hash": "9fcc0358648da7c62096d9dad319c4c813dc20f0b1155110c8674ce90ec0bf67"
+  },
+  {
+    "audit_id": "AUDIT-REC-004",
+    "timestamp": 1700000030.0,
+    "accessor_node": "BorderPolice-Node",
+    "accessor_identity": "BorderPolice-Node-Service",
+    "action": "PERSONNEL_AUTHORIZATION",
+    "target_id": "BP-OFFICER-701",
+    "status": "RECORDED",
+    "details": "Authorized Sub-Inspector Vikram Singh clearance registered",
+    "prev_log_hash": "9fcc0358648da7c62096d9dad319c4c813dc20f0b1155110c8674ce90ec0bf67",
+    "entry_hash": "4a13952184ebdc204b81385ea13fee456b2538a0c3000280d74dde7c9785a624"
+  },
+  {
+    "audit_id": "AUDIT-REC-005",
+    "timestamp": 1700000040.0,
+    "accessor_node": "BorderPolice-Node",
+    "accessor_identity": "BorderPolice-Node-Service",
+    "action": "INTRUSION_EVIDENCE_ANCHOR",
+    "target_id": "INTRUSION-DET-001",
+    "status": "RECORDED",
+    "details": "Perimeter breach anchored at Frame #229 (Track #3)",
+    "prev_log_hash": "4a13952184ebdc204b81385ea13fee456b2538a0c3000280d74dde7c9785a624",
+    "entry_hash": "f06772112c32b4f0f3e1e2d27032f5ce11403808f8167ef3d140b72c8c3e6536"
+  },
+  {
+    "audit_id": "AUDIT-REC-006",
+    "timestamp": 1700000050.0,
+    "accessor_node": "BorderPolice-Node",
+    "accessor_identity": "BorderPolice-Node-Service",
+    "action": "INTRUSION_EVIDENCE_ANCHOR",
+    "target_id": "INTRUSION-DET-002",
+    "status": "RECORDED",
+    "details": "Perimeter breach anchored at Frame #248 (Track #4)",
+    "prev_log_hash": "f06772112c32b4f0f3e1e2d27032f5ce11403808f8167ef3d140b72c8c3e6536",
+    "entry_hash": "3d027774ac318bd38a391696cd336a15802d10d6c6c9e4606a72687dd74d7c95"
+  },
+  {
+    "audit_id": "AUDIT-REC-007",
+    "timestamp": 1700000060.0,
+    "accessor_node": "BorderPolice-Node",
+    "accessor_identity": "BorderPolice-Node-Service",
+    "action": "INTRUSION_EVIDENCE_ANCHOR",
+    "target_id": "INTRUSION-DET-003",
+    "status": "RECORDED",
+    "details": "Perimeter breach anchored at Frame #331 (Track #5)",
+    "prev_log_hash": "3d027774ac318bd38a391696cd336a15802d10d6c6c9e4606a72687dd74d7c95",
+    "entry_hash": "1ab8d584dcf973d2e94bfd84715a3bdfd22f08e44991321611d99e22f8c41bdd"
+  }
+]

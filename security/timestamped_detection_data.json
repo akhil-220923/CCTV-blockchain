@@ -1,0 +1,58 @@
+[
+    {
+        "frameNumber": 0,
+        "videoTimestamp": "00:00.000",
+        "timestampSeconds": 0.0,
+        "evidenceFile": "test_frames/timestamped_detected/detected_000.jpg",
+        "objectType": "person",
+        "confidence": 0.94
+    },
+    {
+        "frameNumber": 49,
+        "videoTimestamp": "00:01.966",
+        "timestampSeconds": 1.966,
+        "evidenceFile": "test_frames/timestamped_detected/detected_001.jpg",
+        "objectType": "person",
+        "confidence": 0.94
+    },
+    {
+        "frameNumber": 98,
+        "videoTimestamp": "00:03.931",
+        "timestampSeconds": 3.931,
+        "evidenceFile": "test_frames/timestamped_detected/detected_002.jpg",
+        "objectType": "person",
+        "confidence": 0.94
+    },
+    {
+        "frameNumber": 147,
+        "videoTimestamp": "00:05.897",
+        "timestampSeconds": 5.897,
+        "evidenceFile": "test_frames/timestamped_detected/detected_003.jpg",
+        "objectType": "person",
+        "confidence": 0.94
+    },
+    {
+        "frameNumber": 196,
+        "videoTimestamp": "00:07.863",
+        "timestampSeconds": 7.863,
+        "evidenceFile": "test_frames/timestamped_detected/detected_004.jpg",
+        "objectType": "person",
+        "confidence": 0.94
+    },
+    {
+        "frameNumber": 245,
+        "videoTimestamp": "00:09.829",
+        "timestampSeconds": 9.829,
+        "evidenceFile": "test_frames/timestamped_detected/detected_005.jpg",
+        "objectType": "person",
+        "confidence": 0.94
+    },
+    {
+        "frameNumber": 294,
+        "videoTimestamp": "00:11.794",
+        "timestampSeconds": 11.794,
+        "evidenceFile": "test_frames/timestamped_detected/detected_006.jpg",
+        "objectType": "person",
+        "confidence": 0.94
+    }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "frameNumber": 0,
+        "timestampSeconds": 0.0,
+        "timestamp": "00:00.000",
+        "evidenceFile": "test_frames/timestamped/frame_000.jpg"
+    },
+    {
+        "frameNumber": 49,
+        "timestampSeconds": 1.966,
+        "timestamp": "00:01.966",
+        "evidenceFile": "test_frames/timestamped/frame_001.jpg"
+    },
+    {
+        "frameNumber": 98,
+        "timestampSeconds": 3.931,
+        "timestamp": "00:03.931",
+        "evidenceFile": "test_frames/timestamped/frame_002.jpg"
+    },
+    {
+        "frameNumber": 147,
+        "timestampSeconds": 5.897,
+        "timestamp": "00:05.897",
+        "evidenceFile": "test_frames/timestamped/frame_003.jpg"
+    },
+    {
+        "frameNumber": 196,
+        "timestampSeconds": 7.863,
+        "timestamp": "00:07.863",
+        "evidenceFile": "test_frames/timestamped/frame_004.jpg"
+    },
+    {
+        "frameNumber": 245,
+        "timestampSeconds": 9.829,
+        "timestamp": "00:09.829",
+        "evidenceFile": "test_frames/timestamped/frame_005.jpg"
+    },
+    {
+        "frameNumber": 294,
+        "timestampSeconds": 11.794,
+        "timestamp": "00:11.794",
+        "evidenceFile": "test_frames/timestamped/frame_006.jpg"
+    }
+]

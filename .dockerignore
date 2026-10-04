@@ -1,0 +1,45 @@
+# Git and IDE metadata
+.git
+.github
+.gitignore
+.vscode
+.idea
+*.swp
+*~
+*.Zone.Identifier
+
+# Python bytecode and environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Node.js artifacts
+node_modules/
+frontend/node_modules/
+frontend/.output/
+frontend/.wrangler/
+backend/node_modules/
+
+# Test data & scratch debug frames
+scratch_frames/
+debug_frame_*.jpg
+debug_pedestrians_crop.jpg
+test_blockchain_data/
+
+# Heavy unused YOLO weights (saving ~270MB in Docker context; epoch_02.pt & yolov8s/n are retained)
+yolov8l.pt
+yolov8m.pt
+yolov8x.pt
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

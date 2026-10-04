@@ -1,0 +1,66 @@
+{
+	admin off
+	auto_https off
+}
+
+:5000, :8080 {
+	encode zstd gzip
+
+	# Live MJPEG Video Stream (unbuffered for real-time CCTV playback)
+	@video path /video/*
+	handle @video {
+		reverse_proxy http://127.0.0.1:5001 {
+			flush_interval -1
+			transport http {
+				keepalive 120s
+			}
+		}
+	}
+
+	# Cryptographic Intrusion Evidence Images
+	@evidence path /evidence/*
+	handle @evidence {
+		reverse_proxy http://127.0.0.1:5001 {
+			transport http {
+				keepalive 120s
+			}
+		}
+	}
+
+	# REST APIs: Blockchain, AI inference, node consensus, tamper simulation
+	@api path /api/*
+	handle @api {
+		reverse_proxy http://127.0.0.1:5001 {
+			transport http {
+				keepalive 120s
+			}
+		}
+	}
+
+	# Health Check Endpoint
+	@health path /health
+	handle @health {
+		reverse_proxy http://127.0.0.1:5001 {
+			transport http {
+				keepalive 120s
+			}
+		}
+	}
+
+	# Production Client Static Assets (served directly by Caddy with caching)
+	@static path /assets/* /favicon.ico /robots.txt
+	handle @static {
+		root * {$FRONTEND_PUBLIC:./frontend/.output/public}
+		file_server
+		header Cache-Control "public, max-age=31536000, immutable"
+	}
+
+	# Command Center React 19 / TanStack Start Production SSR Server
+	handle {
+		reverse_proxy http://127.0.0.1:3000 {
+			transport http {
+				keepalive 120s
+			}
+		}
+	}
+}

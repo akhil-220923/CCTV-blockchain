@@ -1,0 +1,39 @@
+# =====================================================================
+# Cloudflare Named Tunnel Configuration for IBVAP (Unified Domain)
+# =====================================================================
+# This configuration routes ALL traffic under ONE single public domain:
+#   https://<YOUR_STABLE_DOMAIN>/          --> Frontend (Port 3000)
+#   https://<YOUR_STABLE_DOMAIN>/api/*     --> Backend (Port 5000)
+#   https://<YOUR_STABLE_DOMAIN>/video/*   --> Backend (Port 5000)
+#   https://<YOUR_STABLE_DOMAIN>/evidence/*--> Backend (Port 5000)
+
+tunnel: ${TUNNEL_ID}
+credentials-file: ~/.cloudflared/${TUNNEL_ID}.json
+
+ingress:
+  # 1. Health Check
+  - hostname: ${DOMAIN_NAME}
+    path: /health
+    service: http://127.0.0.1:5000
+
+  # 2. Backend REST API
+  - hostname: ${DOMAIN_NAME}
+    path: /api/*
+    service: http://127.0.0.1:5000
+
+  # 2. Real-time Video Feeds (MJPEG live surveillance & MP4 playback)
+  - hostname: ${DOMAIN_NAME}
+    path: /video/*
+    service: http://127.0.0.1:5000
+
+  # 3. Forensic Evidence Snapshots (Ed25519-signed intrusion frames)
+  - hostname: ${DOMAIN_NAME}
+    path: /evidence/*
+    service: http://127.0.0.1:5000
+
+  # 4. Frontend Web Command Center (React 19 + TanStack HUD)
+  - hostname: ${DOMAIN_NAME}
+    service: http://127.0.0.1:3000
+
+  # Required default fallback
+  - service: http_status:404

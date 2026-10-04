@@ -1,0 +1,93 @@
+[
+    {
+        "detectionID": "TIME-TEST-001",
+        "cameraID": "CAM-001",
+        "frameNumber": 0,
+        "videoTimestamp": "00:00.000",
+        "timestampSeconds": 0.0,
+        "evidenceFile": "test_frames/timestamped_detected/detected_000.jpg",
+        "objectType": "person",
+        "confidence": 0.94,
+        "frameHash": "d54f8127b6117d45eae6eb368cf55180c86418de25f6b0e5dd7fbc7d6b304f46",
+        "signature": "8600c83e805d9d700f318de2b99f308a188fa60929890014c119b35270aee20371f9cd3ffc72dbc0f10a4a95f7ded8e1ea3dd5c935efc2e6fddbb115a74eb000",
+        "modelHash": "TEST_MODEL_HASH"
+    },
+    {
+        "detectionID": "TIME-TEST-002",
+        "cameraID": "CAM-001",
+        "frameNumber": 49,
+        "videoTimestamp": "00:01.966",
+        "timestampSeconds": 1.966,
+        "evidenceFile": "test_frames/timestamped_detected/detected_001.jpg",
+        "objectType": "person",
+        "confidence": 0.94,
+        "frameHash": "486d7a054037f727a75f88dbd633e6d50d7b50acd8c0b8f82ccd0c1a73bee754",
+        "signature": "170a85bc1b95c0714e15383b87aacca0e3dce062c472485405dc91178287755b968d7b6e33195cd4649932fcd08e082972f49982df89d46b739fedabede2c704",
+        "modelHash": "TEST_MODEL_HASH"
+    },
+    {
+        "detectionID": "TIME-TEST-003",
+        "cameraID": "CAM-001",
+        "frameNumber": 98,
+        "videoTimestamp": "00:03.931",
+        "timestampSeconds": 3.931,
+        "evidenceFile": "test_frames/timestamped_detected/detected_002.jpg",
+        "objectType": "person",
+        "confidence": 0.94,
+        "frameHash": "f370050cdcf3bd2a0df7c325d7bd6f9ebab2010b72722f24a51b74b5852c236a",
+        "signature": "066526a48dd311917ff9cddc30a35124701addb09123b06302feb8467d2c2c642331a7c6be2d5f4de733d37f21dbfe9dddb89bb6b6da3d69b3c068384970880f",
+        "modelHash": "TEST_MODEL_HASH"
+    },
+    {
+        "detectionID": "TIME-TEST-004",
+        "cameraID": "CAM-001",
+        "frameNumber": 147,
+        "videoTimestamp": "00:05.897",
+        "timestampSeconds": 5.897,
+        "evidenceFile": "test_frames/timestamped_detected/detected_003.jpg",
+        "objectType": "person",
+        "confidence": 0.94,
+        "frameHash": "d4ae5758b7455340452e372abf0ba8992e0837b9b89b1a258d7655a9ebc2f5f6",
+        "signature": "bfe9678fde620a5bf279e06ddfdfe638665f3b1b36293b11a0dd213bca189dae39d7921cece70ac0c88b1206e2eebaf34518c8bbd06dd21e4018122275eb8f0f",
+        "modelHash": "TEST_MODEL_HASH"
+    },
+    {
+        "detectionID": "TIME-TEST-005",
+        "cameraID": "CAM-001",
+        "frameNumber": 196,
+        "videoTimestamp": "00:07.863",
+        "timestampSeconds": 7.863,
+        "evidenceFile": "test_frames/timestamped_detected/detected_004.jpg",
+        "objectType": "person",
+        "confidence": 0.94,
+        "frameHash": "153afcce648469b251e6e0f4e7eafa2b2172e8c9f97b0e90c6b16c972ef75380",
+        "signature": "61eb12648765b57d0fac28f73aa3af9b2fe77a60029902f2835b9abb4ee8b29d6faf8fcc4800e4e085bdd7563eeb5a49bcf8094059521d0510be108285de8a0b",
+        "modelHash": "TEST_MODEL_HASH"
+    },
+    {
+        "detectionID": "TIME-TEST-006",
+        "cameraID": "CAM-001",
+        "frameNumber": 245,
+        "videoTimestamp": "00:09.829",
+        "timestampSeconds": 9.829,
+        "evidenceFile": "test_frames/timestamped_detected/detected_005.jpg",
+        "objectType": "person",
+        "confidence": 0.94,
+        "frameHash": "55e84683ea420627d4e85b9ba41a04186e3f6924a2c6b9c825ee52f2c6606b20",
+        "signature": "967a50690a67260ccfd6677a1099da876656df8689b2a5251a97bf009f7dda633ade223d0ba7633dc5f51567200555b9e62f3ec4731c8ada64c053d708e80704",
+        "modelHash": "TEST_MODEL_HASH"
+    },
+    {
+        "detectionID": "TIME-TEST-007",
+        "cameraID": "CAM-001",
+        "frameNumber": 294,
+        "videoTimestamp": "00:11.794",
+        "timestampSeconds": 11.794,
+        "evidenceFile": "test_frames/timestamped_detected/detected_006.jpg",
+        "objectType": "person",
+        "confidence": 0.94,
+        "frameHash": "0456ee2a7b1036a4da7eaa9d52b3943748e6faf5d5c7de76e6926bed84207bc3",
+        "signature": "41cec58fec73db89ec806f1869d80cf1c76a567ed1574b6b64c5b2e941135f153ed3b02ac59005d364dd0591312b98f079bad281eb177257e817a546aba9fa02",
+        "modelHash": "TEST_MODEL_HASH"
+    }
+]

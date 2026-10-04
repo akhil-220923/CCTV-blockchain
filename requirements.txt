@@ -1,0 +1,20 @@
+# Core Web API & Networking
+Flask>=3.0.0,<4.0.0
+flask-cors>=5.0.0,<7.0.0
+Werkzeug>=3.0.0,<4.0.0
+requests>=2.31.0
+gunicorn>=21.2.0
+
+# Cryptography & Security (Ed25519, SHA-256)
+cryptography>=42.0.0
+
+# Computer Vision & Video Processing
+opencv-python-headless>=4.8.0
+numpy>=1.24.0,<3.0.0
+scipy>=1.11.0
+imageio-ffmpeg>=0.5.0
+
+# Deep Learning & Object Detection (LLVIP YOLOv8)
+torch>=2.0.0
+torchvision>=0.15.0
+ultralytics>=8.1.0
