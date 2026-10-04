@@ -45,6 +45,7 @@ case "$1" in
     stop)
         echo "Stopping IBVAP services..."
         systemctl --user stop cloudflared-tunnel.service ibvap-caddy.service ibvap-frontend.service ibvap-backend.service
+        killall -9 cloudflared 2>/dev/null || true
         echo "All IBVAP services stopped."
         ;;
 

@@ -8,6 +8,10 @@ rm -f "$OUTPUT_FILE"
 
 CLOUDFLARED_BIN="$(command -v cloudflared || echo "$HOME/.local/bin/cloudflared")"
 
+# Clean up any orphaned background cloudflared processes
+killall -9 cloudflared 2>/dev/null || true
+sleep 1
+
 exec "$CLOUDFLARED_BIN" tunnel --url http://127.0.0.1:5000 2>&1 | while IFS= read -r line; do
     echo "$line"
     if [[ "$line" =~ (https://[a-zA-Z0-9-]+\.trycloudflare\.com) ]]; then
