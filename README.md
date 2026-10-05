@@ -4,6 +4,7 @@
 [![Consensus Mesh](https://img.shields.io/badge/blockchain-3--node%20PoA%20mesh-blue.svg)](#blockchain-setup)
 [![AI Engine](https://img.shields.io/badge/AI%20Inference-YOLOv8--LLVIP-orange.svg)](#ai-model-setup)
 [![Security Standard](https://img.shields.io/badge/cryptography-Ed25519%20%2B%20SHA--256-purple.svg)](#security-notes)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/akhil-220923/CCTV-blockchain)
 
 ---
 

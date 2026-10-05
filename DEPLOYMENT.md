@@ -1,19 +1,20 @@
-# IBVAP Complete Production Deployment Guide
+# IBVAP Complete Production Cloud Deployment Guide
 
-This document provides exact, step-by-step instructions to deploy, verify, maintain, and recover the **Intelligent Border Video Analytics Platform (IBVAP)** on any device, cloud server (AWS EC2, DigitalOcean, Hetzner, Linode), WSL2, or Linux host.
+This document provides exact, step-by-step instructions to deploy, verify, maintain, and recover the **Intelligent Border Video Analytics Platform (IBVAP)** on **Render Cloud**, Docker containers, cloud VPS (AWS, GCP, DigitalOcean, Hetzner), or standalone Linux servers.
 
 ---
 
-## Architecture Flow
+## Architecture Flow (Cloud Production)
 
 ```
                       INTERNET (Mobile / Desktop / Laptop)
                                      |
                                      v
-                  NGROK PERSISTENT HTTPS PUBLIC ENDPOINT
+                   PERMANENT CLOUD HTTPS PUBLIC ENDPOINT
+                 (e.g., https://sih-182-tracevasp.onrender.com)
                                      |
                                      v
-                       CADDY REVERSE PROXY (:5000 / :8080)
+                    CADDY REVERSE PROXY (:{\$PORT:8080})
                                      |
                  +-------------------+-------------------+
                  |                                       |
@@ -34,6 +35,36 @@ This document provides exact, step-by-step instructions to deploy, verify, maint
                          Real-time MJPEG /
                          Web H.264 Playback
 ```
+
+---
+
+## 1. Render Cloud Deployment (Primary — Zero PC Dependency)
+
+Deploy directly from GitHub repository `https://github.com/akhil-220923/CCTV-blockchain`.
+
+### Step 1: Render Configuration
+1. Open [https://dashboard.render.com](https://dashboard.render.com) and sign in.
+2. Select your Web Service (or click **New +** -> **Web Service**).
+3. Connect repository: `https://github.com/akhil-220923/CCTV-blockchain` (Branch: `main`).
+4. Configuration parameters:
+   - **Name:** `sih-182-tracevasp` (or any custom service name)
+   - **Environment:** `Docker`
+   - **Dockerfile Path:** `Dockerfile`
+   - **Docker Context:** `.`
+   - **Health Check Path:** `/health`
+   - **Region:** `Oregon` (or closest to your users)
+   - **Plan:** `Free` (or `Starter` $7/mo for 1GB RAM and 0 cold starts)
+
+### Step 2: Environment Variables (Render Dashboard)
+Add these in the **Environment** tab:
+```ini
+PORT=10000
+CORS_ORIGIN=*
+PYTHONUNBUFFERED=1
+```
+
+### Step 3: Deploy
+Click **Deploy Latest Commit**. Render will build the unified multi-stage container (compiling React 19 SSR, assembling AI weights, and starting Caddy + Gunicorn).
 
 ---
 

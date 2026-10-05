@@ -1,21 +1,35 @@
+# Stage 1: Build modern React 19 / TanStack Start production SSR bundle
+FROM node:22-alpine AS frontend-builder
+
+WORKDIR /app/frontend
+
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm ci || npm install
+
+COPY frontend/ ./
+RUN npm run build
+
+# Stage 2: Production Python Runtime + Caddy Reverse Proxy
 FROM python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# Install system dependencies (OpenCV, FFmpeg, curl, gnupg)
+# Install system dependencies (OpenCV headless runtime, FFmpeg, curl)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libgl1 \
     libglib2.0-0 \
     curl \
-    gnupg \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 22 LTS for the frontend command center
+# Install official static Caddy binary from caddy:alpine
+COPY --from=caddy:alpine /usr/bin/caddy /usr/local/bin/caddy
+
+# Install Node.js 22 LTS runtime to execute SSR server
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-    && apt-get install -y nodejs \
+    && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -26,24 +40,31 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 # Copy backend requirements and install
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 
-# Copy frontend manifests and install node packages
-COPY frontend/package.json frontend/package-lock.json* ./frontend/
-RUN cd frontend && npm install
-
-# Copy entire application
+# Copy application source code
 COPY . .
+
+# Copy pre-compiled frontend production build from Stage 1
+COPY --from=frontend-builder /app/frontend/.output /app/frontend/.output
+
+# Reassemble split model weights
+RUN if [ ! -f "ai_pipeline/epoch_02.pt" ] && [ -f "ai_pipeline/epoch_02.pt.part_aa" ]; then \
+        echo "Reassembling certified model weights..." && \
+        cat ai_pipeline/epoch_02.pt.part_* > ai_pipeline/epoch_02.pt; \
+    fi
 
 # Ensure start script is executable
 RUN chmod +x /app/start.sh
 
-# Expose backend (5000) and frontend (3000)
-EXPOSE 5000 3000
+# Environment defaults
+ENV PORT=8080 \
+    HOST=0.0.0.0
 
-ENV PORT=5000 \
-    HOST=0.0.0.0 \
-    FRONTEND_URL=http://localhost:3000 \
-    VITE_BACKEND_URL=http://localhost:5000
+EXPOSE 8080 5000 3000
+
+# Health check verifies that Caddy and backend respond on $PORT
+HEALTHCHECK --interval=20s --timeout=5s --start-period=30s --retries=3 \
+    CMD curl -f http://127.0.0.1:${PORT:-8080}/health || exit 1
 
 CMD ["/app/start.sh"]

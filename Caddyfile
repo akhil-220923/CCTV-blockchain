@@ -3,7 +3,7 @@
 	auto_https off
 }
 
-:5000, :8080 {
+:{$PORT:8080} {
 	encode zstd gzip
 
 	# Request upload limits (100MB for video surveillance footage)
@@ -52,8 +52,8 @@
 		}
 	}
 
-	# Health Check Endpoint
-	@health path /health
+	# Health Check Endpoints
+	@health path /health /api/health
 	handle @health {
 		reverse_proxy {$BACKEND_TARGET:http://127.0.0.1:5001} {
 			transport http {
