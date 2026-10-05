@@ -4,24 +4,51 @@ This document provides exact, step-by-step instructions to deploy, verify, maint
 
 ---
 
+## Architecture Flow
+
+```
+                      INTERNET (Mobile / Desktop / Laptop)
+                                     |
+                                     v
+                  NGROK PERSISTENT HTTPS PUBLIC ENDPOINT
+                                     |
+                                     v
+                       CADDY REVERSE PROXY (:5000 / :8080)
+                                     |
+                 +-------------------+-------------------+
+                 |                                       |
+                 v                                       v
+      FRONTEND COMMAND CENTER                     BACKEND REST API
+     React 19 / TanStack Start SSR                    Gunicorn
+            (Port 3000)                              (Port 5001)
+                                                         |
+                                 +-----------------------+-----------------------+
+                                 |                       |                       |
+                                 v                       v                       v
+                             AI PIPELINE             BLOCKCHAIN               EVIDENCE
+                         YOLOv8-LLVIP Inference   3-Node Consensus Mesh    Ed25519 Signed
+                            ByteTrack Tracker     Border / State / Court   SHA-256 Hashed
+                                 |
+                                 v
+                          VIDEO STREAMING
+                         Real-time MJPEG /
+                         Web H.264 Playback
+```
+
+---
+
 ## Table of Contents
 - [A. Clone Repository](#a-clone-repository)
 - [B. Install Prerequisites](#b-install-prerequisites)
 - [C. Configure .env](#c-configure-env)
-- [D. Build Containers](#d-build-containers)
-- [E. Start Application](#e-start-application)
-- [F. Configure Cloudflare](#f-configure-cloudflare)
-- [G. Configure Domain](#g-configure-domain)
-- [H. Start Cloudflare Tunnel](#h-start-cloudflare-tunnel)
-- [I. Verify HTTPS](#i-verify-https)
-- [J. Test API](#j-test-api)
-- [K. Test AI](#k-test-ai)
-- [L. Test Blockchain](#l-test-blockchain)
-- [M. Test Evidence](#m-test-evidence)
-- [N. Backup Data](#n-backup-data)
-- [O. Restore Data](#o-restore-data)
-- [P. Update Deployment](#p-update-deployment)
-- [Q. Rollback Deployment](#q-rollback-deployment)
+- [D. Start Application Locally](#d-start-application-locally)
+- [E. Docker Compose Deployment](#e-docker-compose-deployment)
+- [F. Configure Ngrok Persistent Tunnel](#f-configure-ngrok-persistent-tunnel)
+- [G. Verify Health & APIs](#g-verify-health--apis)
+- [H. Test AI, Video, Blockchain & Evidence](#h-test-ai-video-blockchain--evidence)
+- [I. Backup & Restore](#i-backup--restore)
+- [J. Update & Rollback](#j-update--rollback)
+- [K. Troubleshooting](#k-troubleshooting)
 
 ---
 
@@ -43,18 +70,18 @@ sudo apt update && sudo apt install -y curl git python3 python3-pip ffmpeg libgl
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs
 
-# Install cloudflared
-curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-sudo dpkg -i cloudflared.deb && rm cloudflared.deb
-
 # Install Caddy
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
 curl -1sLF 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLF 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 sudo apt update && sudo apt install -y caddy
+
+# Install official ngrok binary (if not installed)
+curl -sSL https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz -o /tmp/ngrok.tgz
+tar -xzf /tmp/ngrok.tgz -C ~/.local/bin/ && rm /tmp/ngrok.tgz
 ```
 
-#### Run automated setup to reassemble model checkpoints and build frontend:
+#### Run automated platform setup:
 ```bash
 ./scripts/setup.sh
 ```
@@ -67,167 +94,160 @@ Create the production environment file from template:
 ```bash
 cp .env.example .env
 ```
-Edit `.env` to configure your domain and optional settings:
+Edit `.env` to configure your settings:
 ```bash
-nano .env
+# Server Environment
+NODE_ENV=production
+PORT=5000
+HOST=0.0.0.0
+CORS_ORIGIN=*
+
+# Ngrok Configuration (Free Static Domain)
+NGROK_DOMAIN=your-assigned-domain.ngrok-free.app
+
+# AI & Blockchain Paths
+MODEL_PATH=ai_pipeline/epoch_02.pt
+FALLBACK_MODEL=yolov8s.pt
+CONFIDENCE_THRESHOLD=0.15
+BLOCKCHAIN_DATA_PATH=blockchain_data
+EVIDENCE_PATH=evidence
+VIDEO_PATH=video
 ```
 
 ---
 
-### D. Build Containers
+### D. Start Application Locally
 
-If deploying with Docker Compose:
-```bash
-# Build the production stack without running
-docker compose -f docker-compose.prod.yml build
-```
-
----
-
-### E. Start Application
-
-#### Method 1: Bare-Metal / WSL2 (Using `deploy.sh`)
+#### Using `deploy.sh`:
 ```bash
 ./deploy.sh start
 ```
-Verify status:
+Check status:
 ```bash
 ./deploy.sh status
 ```
+Local URLs:
+- **Caddy Reverse Proxy:** http://localhost:5000 or http://localhost:8080
+- **Backend API:** http://localhost:5000/api/overview
+- **Health Check:** http://localhost:5000/health
 
-#### Method 2: Docker Compose (Production Hardened Stack)
+---
+
+### E. Docker Compose Deployment
+
+To deploy the entire production stack inside Docker containers:
 ```bash
-docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 Verify container health:
 ```bash
 docker compose -f docker-compose.prod.yml ps
 ```
+Services inside Docker:
+- `backend`: Internal port 5000 (Python 3.11, Gunicorn, PyTorch, YOLOv8)
+- `frontend`: Internal port 3000 (Node 22 Alpine, React 19 SSR)
+- `caddy`: Unified public reverse proxy on host port 80/8080 forwarding to frontend and backend
 
 ---
 
-### F. Configure Cloudflare
+### F. Configure Ngrok Persistent Tunnel
 
-If using a custom domain on Cloudflare:
-```bash
-# Authenticate cloudflared with your Cloudflare account
-cloudflared tunnel login
-```
+To make the application permanently accessible from any phone, tablet, or external laptop without purchasing a domain:
 
----
-
-### G. Configure Domain
-
-Create a named tunnel and route DNS to your domain:
-```bash
-./setup_named_tunnel.sh your-domain.com
-```
-
----
-
-### H. Start Cloudflare Tunnel
-
-#### Quick Tunnel (No domain needed):
-```bash
-# Starts tunnel daemon in the background and writes public HTTPS URL to TUNNEL_URL.txt
-./deploy.sh start
-cat TUNNEL_URL.txt
-```
-
-#### Named Tunnel:
-```bash
-systemctl --user enable --now cloudflared-tunnel.service
-```
+1. **Sign up / Log in to ngrok:** [https://dashboard.ngrok.com](https://dashboard.ngrok.com)
+2. **Retrieve your AuthToken:** [https://dashboard.ngrok.com/get-started/your-authtoken](https://dashboard.ngrok.com/get-started/your-authtoken)
+3. **Save your authtoken securely on your system:**
+   ```bash
+   ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
+   ```
+4. **Retrieve your free assigned static dev domain:**
+   Check [https://dashboard.ngrok.com/cloud-edge/domains](https://dashboard.ngrok.com/cloud-edge/domains) for your free permanent domain (e.g. `example-unique.ngrok-free.app`).
+5. **Start the persistent tunnel to Caddy:**
+   ```bash
+   # Run directly or via script:
+   ./run_ngrok.sh <YOUR_ASSIGNED_DOMAIN>.ngrok-free.app
+   ```
+   Or enable as an automatic background service:
+   ```bash
+   systemctl --user enable --now ibvap-ngrok.service
+   ```
 
 ---
 
-### I. Verify HTTPS
-
-Check that the public HTTPS URL returns HTTP 200:
-```bash
-PUBLIC_URL=$(cat TUNNEL_URL.txt)
-curl -sI "$PUBLIC_URL" | head -n 5
-```
-Expected output:
-```
-HTTP/2 200
-server: cloudflare
-...
-```
-
----
-
-### J. Test API
+### G. Verify Health & APIs
 
 Run the automated healthcheck:
 ```bash
 ./scripts/healthcheck.sh
 ```
-Or manually query the endpoints:
+
+Query via your public HTTPS endpoint:
 ```bash
-curl -s https://YOUR-DOMAIN/health
-curl -s https://YOUR-DOMAIN/api/overview
-curl -s https://YOUR-DOMAIN/api/nodes
+curl -s https://<YOUR-NGROK-DOMAIN>/health
+curl -s https://<YOUR-NGROK-DOMAIN>/api/overview
+curl -s https://<YOUR-NGROK-DOMAIN>/api/nodes
 ```
-
----
-
-### K. Test AI
-
-Test image detection and model inference:
-```bash
-curl -s -F "file=@debug_pedestrians_crop.jpg" https://YOUR-DOMAIN/api/upload/image
-```
-Verify that detected bounding boxes, classes, and person counts are returned in JSON.
-
----
-
-### L. Test Blockchain
-
-Check ledger height and consensus state:
-```bash
-curl -s https://YOUR-DOMAIN/api/blockchain/chain?node=border_police | jq '.chain_length, .is_integrity_valid'
-```
-Simulate intrusion status concealment tampering:
-```bash
-curl -s -X POST https://YOUR-DOMAIN/api/simulate/tamper-intrusion \
-  -H "Content-Type: application/json" \
-  -d '{"event_id":"INTRUSION-DET-001","node":"state_police","status":"NO_INTRUSION_DETECTED"}'
-```
-Notice peer nodes immediately detect the disparity. Restore consensus:
-```bash
-curl -s -X POST https://YOUR-DOMAIN/api/simulate/restore
-```
-
----
-
-### M. Test Evidence
-
-Verify evidence frame forensics with Judiciary node:
-```bash
-curl -s https://YOUR-DOMAIN/api/verify/evidence/INTRUSION-DET-001 | jq '.is_authentic_forensic_evidence, .hash_matches, .signature_valid'
-```
-Expected:
+Expected `/health` response:
 ```json
-true
-true
-true
+{
+  "nodes": {
+    "border_police": "BorderPolice-Node",
+    "judiciary": "Judiciary-Node",
+    "state_police": "StatePolice-Node"
+  },
+  "service": "backend",
+  "status": "ok"
+}
 ```
 
 ---
 
-### N. Backup Data
+### H. Test AI, Video, Blockchain & Evidence
 
-To take a complete snapshot of all blockchain ledgers, evidence files, and cryptographic keys:
+#### 1. Test AI Person Detection (Image Upload):
+```bash
+curl -s -F "file=@debug_frame_100.jpg" https://<YOUR-NGROK-DOMAIN>/api/upload/image
+```
+
+#### 2. Trigger Full Video Surveillance Scan:
+```bash
+curl -s -X POST https://<YOUR-NGROK-DOMAIN>/api/process-video
+```
+
+#### 3. Verify Blockchain Ledger Integrity:
+```bash
+curl -s "https://<YOUR-NGROK-DOMAIN>/api/blockchain/chain?node=border_police"
+```
+
+#### 4. Test Cryptographic Forensic Verification:
+```bash
+curl -s "https://<YOUR-NGROK-DOMAIN>/api/verify/evidence/INTRUSION-DET-001"
+```
+
+#### 5. Test Tamper Concealment Detection:
+```bash
+# Maliciously change intrusion status to 'NO_INTRUSION_DETECTED' on State Police node
+curl -s -X POST https://<YOUR-NGROK-DOMAIN>/api/intrusion/change-status \
+  -H "Content-Type: application/json" \
+  -d '{"event_id":"INTRUSION-DET-001","node":"state_police","new_status":"NO_INTRUSION_DETECTED"}'
+
+# Verify consensus immediately flags the integrity breach
+curl -s https://<YOUR-NGROK-DOMAIN>/api/overview
+
+# Restore ledger to authentic consensus state
+curl -s -X POST https://<YOUR-NGROK-DOMAIN>/api/simulate/restore
+```
+
+---
+
+### I. Backup & Restore
+
+#### Backup:
 ```bash
 tar -czvf "ibvap_backup_$(date +%Y%m%d_%H%M%S).tar.gz" blockchain_data/ evidence/ security/
 ```
 
----
-
-### O. Restore Data
-
-To restore from a backup archive:
+#### Restore:
 ```bash
 ./deploy.sh stop
 tar -xzvf ibvap_backup_*.tar.gz
@@ -237,22 +257,30 @@ tar -xzvf ibvap_backup_*.tar.gz
 
 ---
 
-### P. Update Deployment
+### J. Update & Rollback
 
-To pull updates and re-deploy without downtime:
+#### Update:
 ```bash
 git pull origin main
 ./scripts/setup.sh
 ./deploy.sh restart
 ```
 
----
-
-### Q. Rollback Deployment
-
-To revert to a previous git commit or restore state:
+#### Rollback:
 ```bash
 git checkout <PREVIOUS_COMMIT_SHA>
 ./deploy.sh restart
 ./scripts/healthcheck.sh
 ```
+
+---
+
+### K. Troubleshooting
+
+1. **`bind: permission denied` on Port 80:**
+   - When running via non-root user (`systemctl --user`), Caddy listens on `:5000` and `:8080`. Ngrok binds directly to port `5000` or `8080`.
+2. **Model Missing:**
+   - Run `./scripts/setup.sh` to concatenate split model parts (`epoch_02.pt.part_*`) into `ai_pipeline/epoch_02.pt`.
+3. **Public URL unreachable:**
+   - Verify that your PC is awake and connected to the internet.
+   - Run `./deploy.sh status` to ensure all 4 services (backend, frontend, caddy, ngrok) are active.

@@ -25,14 +25,24 @@ case "$1" in
         echo "[3/4] Starting Caddy High-Speed Reverse Proxy on :5000 and :8080..."
         systemctl --user restart ibvap-caddy.service
 
-        echo "[4/4] Starting Cloudflare Tunnel Daemon..."
-        systemctl --user restart cloudflared-tunnel.service
+        if [ -f "$HOME/.config/ngrok/ngrok.yml" ] || systemctl --user is-enabled ibvap-ngrok.service 1>/dev/null 2>&1; then
+            echo "[4/4] Starting ngrok Persistent Public Tunnel (Routing into Caddy :5000)..."
+            systemctl --user restart ibvap-ngrok.service
+            TUNNEL_SVC="ibvap-ngrok.service"
+        elif systemctl --user is-enabled cloudflared-tunnel.service 1>/dev/null 2>&1; then
+            echo "[4/4] Starting Cloudflare Tunnel Daemon..."
+            systemctl --user restart cloudflared-tunnel.service
+            TUNNEL_SVC="cloudflared-tunnel.service"
+        else
+            echo "[4/4] No public tunnel daemon enabled (Local Caddy active on :5000 and :8080)"
+            TUNNEL_SVC=""
+        fi
 
         sleep 3
         echo "=========================================================="
         echo "  Deployment Status Verification"
         echo "=========================================================="
-        systemctl --user --no-pager status ibvap-backend.service ibvap-frontend.service ibvap-caddy.service cloudflared-tunnel.service | grep -E "Loaded:|Active:"
+        systemctl --user --no-pager status ibvap-backend.service ibvap-frontend.service ibvap-caddy.service $TUNNEL_SVC 2>/dev/null | grep -E "Loaded:|Active:" || true
         echo ""
         if [ -f "$DIR/TUNNEL_URL.txt" ]; then
             echo "  ✓ Public Live URL: $(cat "$DIR/TUNNEL_URL.txt")"
@@ -44,8 +54,8 @@ case "$1" in
 
     stop)
         echo "Stopping IBVAP services..."
-        systemctl --user stop cloudflared-tunnel.service ibvap-caddy.service ibvap-frontend.service ibvap-backend.service
-        killall -9 cloudflared 2>/dev/null || true
+        systemctl --user stop ibvap-ngrok.service cloudflared-tunnel.service ibvap-caddy.service ibvap-frontend.service ibvap-backend.service 2>/dev/null || true
+        killall -9 ngrok cloudflared 2>/dev/null || true
         echo "All IBVAP services stopped."
         ;;
 
@@ -57,7 +67,7 @@ case "$1" in
 
     status)
         echo "=== IBVAP Service Status ==="
-        systemctl --user --no-pager status ibvap-backend.service ibvap-frontend.service ibvap-caddy.service cloudflared-tunnel.service
+        systemctl --user --no-pager status ibvap-backend.service ibvap-frontend.service ibvap-caddy.service ibvap-ngrok.service 2>/dev/null || true
         echo ""
         if [ -f "$DIR/TUNNEL_URL.txt" ]; then
             echo "Current Public URL: $(cat "$DIR/TUNNEL_URL.txt")"
@@ -75,7 +85,7 @@ case "$1" in
         ;;
 
     logs)
-        journalctl --user -u ibvap-backend -u ibvap-frontend -u ibvap-caddy -u cloudflared-tunnel -f
+        journalctl --user -u ibvap-backend -u ibvap-frontend -u ibvap-caddy -u ibvap-ngrok -u cloudflared-tunnel -f
         ;;
 
     *)

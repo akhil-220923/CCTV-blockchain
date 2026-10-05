@@ -28,7 +28,7 @@ fi
 if [ -f "$DIR/TUNNEL_URL.txt" ]; then
     PUBLIC_URL="$(cat "$DIR/TUNNEL_URL.txt")"
     echo ""
-    echo "[3] Testing Public Cloudflare HTTPS Endpoint ($PUBLIC_URL)..."
+    echo "[3] Testing Public HTTPS Endpoint ($PUBLIC_URL)..."
     if curl -s -f "$PUBLIC_URL/health" >/dev/null 2>&1; then
         echo "  ✓ Public HTTPS /health: OK"
         curl -s "$PUBLIC_URL/health"
