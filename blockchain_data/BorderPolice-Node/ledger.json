@@ -830,7 +830,8 @@
       "recorded_at": 1791166737.2356913,
       "reporting_node": "BorderPolice-Node",
       "block_index": 32,
-      "block_hash": "33a142bc22a1dde6e0146f6dce8ec24d66d23a237c84e7c02c1d902c324f678e"
+      "block_hash": "33a142bc22a1dde6e0146f6dce8ec24d66d23a237c84e7c02c1d902c324f678e",
+      "is_tampered": false
     },
     "INTRUSION-DET-002": {
       "type": "INTRUSION_EVIDENCE",
@@ -850,7 +851,8 @@
       "recorded_at": 1791166749.6304522,
       "reporting_node": "BorderPolice-Node",
       "block_index": 33,
-      "block_hash": "242366b3801e92c9319defd732a53da2ed6d7ddd744c859dd7927f1566f249fe"
+      "block_hash": "242366b3801e92c9319defd732a53da2ed6d7ddd744c859dd7927f1566f249fe",
+      "is_tampered": false
     },
     "INTRUSION-DET-003": {
       "type": "INTRUSION_EVIDENCE",
@@ -870,7 +872,8 @@
       "recorded_at": 1791166809.5232813,
       "reporting_node": "BorderPolice-Node",
       "block_index": 34,
-      "block_hash": "6d221c10b4722518f795f401bdf864151d371ba7713bc6869f1672d6dc3ba6e2"
+      "block_hash": "6d221c10b4722518f795f401bdf864151d371ba7713bc6869f1672d6dc3ba6e2",
+      "is_tampered": false
     }
   },
   "audit_logs": [
@@ -1787,34 +1790,5 @@
       "entry_hash": "bd2560a2298c89f5888d8ac1f889e000fee83f43e9de0741b20427033500f2ec"
     }
   ],
-  "security_alerts": [
-    {
-      "alert_id": "TAMPER-ALERT-BLK-1791166923614-32",
-      "timestamp": 1791166923.614899,
-      "severity": "CRITICAL",
-      "target_type": "BLOCK",
-      "block_index": 32,
-      "local_node": "BorderPolice-Node",
-      "remote_node": "StatePolice-Node",
-      "local_hash": "33a142bc22a1dde6e0146f6dce8ec24d66d23a237c84e7c02c1d902c324f678e",
-      "remote_hash": "0e6389c3f0386bd15460f20a6699c56ffc15df2c4b5e98f397d1932dbbf58612",
-      "message": "CRITICAL INTEGRITY BREACH: Block #32 hash disparity detected! Block modified on StatePolice-Node or local ledger.",
-      "detected_by": [
-        "BorderPolice-Node"
-      ]
-    },
-    {
-      "alert_id": "TAMPER-ALERT-INTRUSION-1791166923625-INTRUSION-DET-001",
-      "timestamp": 1791166923.6255298,
-      "severity": "CRITICAL",
-      "target_type": "INTRUSION_CONCEALMENT",
-      "event_id": "INTRUSION-DET-001",
-      "local_node": "BorderPolice-Node",
-      "remote_node": "StatePolice-Node",
-      "message": "CRITICAL INTEGRITY BREACH: Intrusion INTRUSION-DET-001 was maliciously changed from 'INTRUSION DETECTED' to 'NO INTRUSION DETECTED' on StatePolice-Node! Attempted concealment of perimeter breach caught by consensus.",
-      "detected_by": [
-        "BorderPolice-Node"
-      ]
-    }
-  ]
+  "security_alerts": []
 }

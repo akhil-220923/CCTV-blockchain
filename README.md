@@ -216,30 +216,35 @@ In this mode, only the reverse proxy (Port 80) is accessible externally. All int
 
 ---
 
-## 10. Cloudflare Deployment (Stable Public HTTPS)
+## 10. Public Access & Tunnel Deployment
 
-### Quick Tunnel (Zero-configuration public URL)
-```bash
-./deploy.sh start
-cat TUNNEL_URL.txt
-```
-This generates a live public HTTPS URL accessible from any mobile phone, tablet, or external computer:
-```
-https://<random-id>.trycloudflare.com
-```
+### Option A: ngrok Persistent Dev Domain (No Custom Domain Required)
+To make your application accessible from any external device, phone, or laptop without purchasing a domain:
+1. Authenticate your ngrok account (stores token in `~/.config/ngrok/ngrok.yml`):
+   ```bash
+   ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
+   ```
+2. Set your assigned free dev domain in `.env`:
+   ```bash
+   NGROK_DOMAIN=your-assigned-domain.ngrok-free.app
+   ```
+3. Start the persistent tunnel to Caddy reverse proxy:
+   ```bash
+   ./run_ngrok.sh your-assigned-domain.ngrok-free.app
+   ```
+   Or enable the background systemd service:
+   ```bash
+   systemctl --user enable --now ibvap-ngrok.service
+   ```
 
-### Named Tunnel (Custom Domain)
+### Option B: Cloudflare Named Tunnel (Requires Custom Domain)
 1. Authenticate with your Cloudflare account:
    ```bash
    cloudflared tunnel login
    ```
-2. Configure tunnel for your domain:
+2. Configure named tunnel for your domain:
    ```bash
    ./setup_named_tunnel.sh your-domain.com
-   ```
-3. Your platform will be accessible at:
-   ```
-   https://your-domain.com/
    ```
 
 ---
@@ -249,7 +254,7 @@ https://<random-id>.trycloudflare.com
 The unified deployment tool manages all background systemd daemons:
 
 ```bash
-# Start all production services (Backend, Frontend SSR, Caddy, Cloudflare)
+# Start all production services (Backend, Frontend SSR, Caddy, ngrok/tunnel)
 ./deploy.sh start
 
 # Check service health & view active public HTTPS URL
