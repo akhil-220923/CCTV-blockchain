@@ -1,11 +1,12 @@
+import os
 import hashlib
 
 from cryptography.hazmat.primitives.asymmetric import ed25519
 from cryptography.hazmat.primitives import serialization
 
-
-PRIVATE_KEY_FILE = "camera_001_private_key.pem"
-PUBLIC_KEY_FILE = "camera_001_public_key.pem"
+SECURITY_DIR = os.path.dirname(os.path.abspath(__file__))
+PRIVATE_KEY_FILE = os.path.join(SECURITY_DIR, "camera_001_private_key.pem")
+PUBLIC_KEY_FILE = os.path.join(SECURITY_DIR, "camera_001_public_key.pem")
 
 
 def calculate_sha256(file_path):

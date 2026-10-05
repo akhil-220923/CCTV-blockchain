@@ -18,6 +18,8 @@ from blockchain.crypto_utils import (
     verify_signature
 )
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 class BorderSurveillanceProcessor:
     """
@@ -41,12 +43,12 @@ class BorderSurveillanceProcessor:
     ):
         self.camera_id = camera_id
         self.camera_location = camera_location
-        self.camera_private_key_path = camera_private_key_path
-        self.camera_public_key_path = camera_public_key_path
+        self.camera_private_key_path = camera_private_key_path if os.path.isabs(camera_private_key_path) else os.path.join(BASE_DIR, camera_private_key_path)
+        self.camera_public_key_path = camera_public_key_path if os.path.isabs(camera_public_key_path) else os.path.join(BASE_DIR, camera_public_key_path)
 
         # Load camera cryptographic keys
         if not os.path.exists(self.camera_private_key_path) or not os.path.exists(self.camera_public_key_path):
-            raise FileNotFoundError("Camera key pair not found in security/ directory!")
+            raise FileNotFoundError(f"Camera key pair not found at {self.camera_private_key_path} or {self.camera_public_key_path}!")
 
         self.camera_private_key = load_private_key_from_file(self.camera_private_key_path)
         with open(self.camera_public_key_path, "r") as f:
@@ -117,6 +119,10 @@ class BorderSurveillanceProcessor:
         Reads CCTV video, performs detection, ByteTrack tracking, zone breach validation,
         cryptographic signing, blockchain anchoring, and annotated video generation.
         """
+        input_video_path = input_video_path if os.path.isabs(input_video_path) else os.path.join(BASE_DIR, input_video_path)
+        output_video_path = output_video_path if os.path.isabs(output_video_path) else os.path.join(BASE_DIR, output_video_path)
+        evidence_dir = evidence_dir if os.path.isabs(evidence_dir) else os.path.join(BASE_DIR, evidence_dir)
+
         os.makedirs(os.path.dirname(os.path.abspath(output_video_path)), exist_ok=True)
         os.makedirs(evidence_dir, exist_ok=True)
 

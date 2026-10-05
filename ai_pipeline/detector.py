@@ -1,4 +1,5 @@
 import os
+import shutil
 import hashlib
 import cv2
 import numpy as np
@@ -20,10 +21,18 @@ class BorderPersonDetector:
 
     def __init__(
         self,
-        model_path: str = "ai_pipeline/epoch_02.pt",
-        fallback_model: str = "yolov8s.pt",
-        confidence_threshold: float = 0.15
+        model_path: str = None,
+        fallback_model: str = None,
+        confidence_threshold: float = None
     ):
+        model_path = model_path or os.environ.get("MODEL_PATH", "ai_pipeline/epoch_02.pt")
+        fallback_model = fallback_model or os.environ.get("FALLBACK_MODEL", "yolov8s.pt")
+        if confidence_threshold is None:
+            try:
+                confidence_threshold = float(os.environ.get("CONFIDENCE_THRESHOLD", 0.15))
+            except (ValueError, TypeError):
+                confidence_threshold = 0.15
+
         self.model_path = model_path if os.path.isabs(model_path) else os.path.join(BASE_DIR, model_path)
         self.confidence_threshold = confidence_threshold
         self._ensure_model_file()

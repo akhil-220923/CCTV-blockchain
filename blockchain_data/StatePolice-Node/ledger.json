@@ -1,6 +1,6 @@
 {
   "node_id": "StatePolice-Node",
-  "chain_length": 29,
+  "chain_length": 35,
   "chain": [
     {
       "index": 0,
@@ -552,12 +552,138 @@
     },
     {
       "index": 26,
-      "timestamp": 1790754268.3180969,
+      "timestamp": 1791145365.7039258,
       "previous_hash": "95b1b0b806c178b8d1a025156ac62fabbcdb27e88b2163f02d5b2df2276c0a9f",
-      "merkle_root": "dc70312e6a1c5871476c592ba9d48860099c2d6081595dd2328b20ba99385258",
+      "merkle_root": "4e332edd2e5b48fc74077ef555485cc01f6c0ab8337b14b43c3a4d914f308753",
       "validator_node": "BorderPolice-Node",
       "nonce": 0,
-      "hash": "6b7275c0498aae43d7f2824782064024d3106504b2bae11fc1993a7526a03e70",
+      "hash": "6f725d240312de98fad337dcd5e48e44f7835ad2a04129bc889c341fce1b3839",
+      "transactions": [
+        {
+          "type": "CAMERA_REGISTRATION",
+          "camera_id": "CAM-001",
+          "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAKYLYZ0Ysco/+j+IsOpEVXWi8mMeBOMVaDtk2/Lr8nVs=\n-----END PUBLIC KEY-----\n",
+          "location": "Sector-4 North Ridge Perimeter Post",
+          "registered_by": "BorderPolice-Node",
+          "timestamp": 1791145365.7038474,
+          "status": "ACTIVE"
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "timestamp": 1791145367.2520187,
+      "previous_hash": "6f725d240312de98fad337dcd5e48e44f7835ad2a04129bc889c341fce1b3839",
+      "merkle_root": "8ba4973dc434a50ca787a4cdd218bc8e19009b5c47f898e6a9a3d8af4c4cfa2d",
+      "validator_node": "Judiciary-Node",
+      "nonce": 0,
+      "hash": "bda60ddbcb6aaf727e0e4772fab6114954a324cb038318168bfb512e99266720",
+      "transactions": [
+        {
+          "type": "MODEL_REGISTRATION",
+          "model_id": "LLVIP-BORDER-YOLO",
+          "model_name": "BorderGuard-YOLOv8-LLVIP",
+          "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
+          "version": "v1.0-Production",
+          "authorized_by": "Judiciary-Node",
+          "timestamp": 1791145367.2519622,
+          "status": "VERIFIED_ACTIVE"
+        }
+      ]
+    },
+    {
+      "index": 28,
+      "timestamp": 1791145367.3412452,
+      "previous_hash": "bda60ddbcb6aaf727e0e4772fab6114954a324cb038318168bfb512e99266720",
+      "merkle_root": "85c2e4bf1ed2addf26be30f57cf72811578912521362d09d20cd66950805eabb",
+      "validator_node": "BorderPolice-Node",
+      "nonce": 0,
+      "hash": "2e7f4748786a8b601586258455e6b8884a244692558c262791a0f804660a3f9b",
+      "transactions": [
+        {
+          "type": "PERSONNEL_AUTHORIZATION",
+          "personnel_id": "BP-OFFICER-701",
+          "name": "Sub-Inspector Vikram Singh",
+          "rank": "Border Patrol Officer",
+          "organization": "Border Security Force",
+          "exemption_active": true,
+          "assigned_track_id": 6,
+          "timestamp": 1791145367.3411705,
+          "updated_by": "BorderPolice-Node"
+        }
+      ]
+    },
+    {
+      "index": 29,
+      "timestamp": 1791166582.2938704,
+      "previous_hash": "2e7f4748786a8b601586258455e6b8884a244692558c262791a0f804660a3f9b",
+      "merkle_root": "2234bb7ea48b869234022fdabaced6b56c7daef3b0485487c200fff7afdaf9c6",
+      "validator_node": "BorderPolice-Node",
+      "nonce": 0,
+      "hash": "c9c4704ce1cf254575c2046dafc4d0a496062b1ac3ab83dc6038e05ba52cf124",
+      "transactions": [
+        {
+          "type": "CAMERA_REGISTRATION",
+          "camera_id": "CAM-001",
+          "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAKYLYZ0Ysco/+j+IsOpEVXWi8mMeBOMVaDtk2/Lr8nVs=\n-----END PUBLIC KEY-----\n",
+          "location": "Sector-4 North Ridge Perimeter Post",
+          "registered_by": "BorderPolice-Node",
+          "timestamp": 1791166582.2938263,
+          "status": "ACTIVE"
+        }
+      ]
+    },
+    {
+      "index": 30,
+      "timestamp": 1791166582.494761,
+      "previous_hash": "c9c4704ce1cf254575c2046dafc4d0a496062b1ac3ab83dc6038e05ba52cf124",
+      "merkle_root": "433a633046dfda69e9a5b860f4a850a5ab099d35d061a80ba9eb4da7377c2e77",
+      "validator_node": "Judiciary-Node",
+      "nonce": 0,
+      "hash": "95479851565d1b8aa55a8ad1d0dc41aec44cc0ae9e30a4ce4ca76e6aff3c922d",
+      "transactions": [
+        {
+          "type": "MODEL_REGISTRATION",
+          "model_id": "LLVIP-BORDER-YOLO",
+          "model_name": "BorderGuard-YOLOv8-LLVIP",
+          "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
+          "version": "v1.0-Production",
+          "authorized_by": "Judiciary-Node",
+          "timestamp": 1791166582.4947195,
+          "status": "VERIFIED_ACTIVE"
+        }
+      ]
+    },
+    {
+      "index": 31,
+      "timestamp": 1791166582.5248296,
+      "previous_hash": "95479851565d1b8aa55a8ad1d0dc41aec44cc0ae9e30a4ce4ca76e6aff3c922d",
+      "merkle_root": "f6b46496fde5d13d735749a46041ad08d38cc28bfc45a4d46cc53d110b0983d3",
+      "validator_node": "BorderPolice-Node",
+      "nonce": 0,
+      "hash": "3caaae8ba6328592f9f560d659556caa9322192b28ec1439b066732d3f38a605",
+      "transactions": [
+        {
+          "type": "PERSONNEL_AUTHORIZATION",
+          "personnel_id": "BP-OFFICER-701",
+          "name": "Sub-Inspector Vikram Singh",
+          "rank": "Border Patrol Officer",
+          "organization": "Border Security Force",
+          "exemption_active": true,
+          "assigned_track_id": 6,
+          "timestamp": 1791166582.5247834,
+          "updated_by": "BorderPolice-Node"
+        }
+      ]
+    },
+    {
+      "index": 32,
+      "timestamp": 1791166737.2358043,
+      "previous_hash": "3caaae8ba6328592f9f560d659556caa9322192b28ec1439b066732d3f38a605",
+      "merkle_root": "48574380fd58130d51efeb85db8df91f55519b67c02a132b9fc66cffce9cc84c",
+      "validator_node": "BorderPolice-Node",
+      "nonce": 0,
+      "hash": "0e6389c3f0386bd15460f20a6699c56ffc15df2c4b5e98f397d1932dbbf58612",
       "transactions": [
         {
           "type": "INTRUSION_EVIDENCE",
@@ -570,23 +696,24 @@
           "camera_signature": "c251c185679573ffae6065dba0f61348de67a5d90f1d549cc5f4714408b82c25c23eac4e415e9021f3075359d3cc5257ad3b96b3dca10b9ea6450501a46bb002",
           "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
           "zone_id": "ZONE-ALPHA-BORDER",
-          "evidence_file": "evidence/intrusion_CAM-001_track_3_frame_0229.jpg",
-          "detection_status": "INTRUSION_DETECTED",
+          "evidence_file": "/home/akhil/CCTV-blockchain/evidence/intrusion_CAM-001_track_3_frame_0229.jpg",
+          "detection_status": "NO_INTRUSION_DETECTED",
           "camera_verified": true,
           "model_verified": true,
-          "recorded_at": 1790754268.318041,
-          "reporting_node": "BorderPolice-Node"
+          "recorded_at": 1791166737.2356913,
+          "reporting_node": "BorderPolice-Node",
+          "tampered": true
         }
       ]
     },
     {
-      "index": 27,
-      "timestamp": 1790754283.9030497,
-      "previous_hash": "6b7275c0498aae43d7f2824782064024d3106504b2bae11fc1993a7526a03e70",
-      "merkle_root": "5d4b7110ce2f5fdbff4e847c46a70a11590550e97d652490395cb60ff99fcf16",
+      "index": 33,
+      "timestamp": 1791166749.6305323,
+      "previous_hash": "33a142bc22a1dde6e0146f6dce8ec24d66d23a237c84e7c02c1d902c324f678e",
+      "merkle_root": "3481c49ec78cef948122692a7e164278b11d5178c405063cb10f29fb2b8ffef3",
       "validator_node": "BorderPolice-Node",
       "nonce": 0,
-      "hash": "51a55e6afe664617e4e5ce14f3bf3b9876b4e2f7c62cee04264bf0f1dd55f600",
+      "hash": "242366b3801e92c9319defd732a53da2ed6d7ddd744c859dd7927f1566f249fe",
       "transactions": [
         {
           "type": "INTRUSION_EVIDENCE",
@@ -599,23 +726,23 @@
           "camera_signature": "d4d2826522d5c7f75482af62f42974a3975752a4840c92e96cedea9a40fe73f1a24a08e606053e5ffefa5d02baa4bf6c3bf1e44c942115ccad2b41d17a18ce04",
           "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
           "zone_id": "ZONE-ALPHA-BORDER",
-          "evidence_file": "evidence/intrusion_CAM-001_track_4_frame_0248.jpg",
+          "evidence_file": "/home/akhil/CCTV-blockchain/evidence/intrusion_CAM-001_track_4_frame_0248.jpg",
           "detection_status": "INTRUSION_DETECTED",
           "camera_verified": true,
           "model_verified": true,
-          "recorded_at": 1790754283.903002,
+          "recorded_at": 1791166749.6304522,
           "reporting_node": "BorderPolice-Node"
         }
       ]
     },
     {
-      "index": 28,
-      "timestamp": 1790754346.771891,
-      "previous_hash": "51a55e6afe664617e4e5ce14f3bf3b9876b4e2f7c62cee04264bf0f1dd55f600",
-      "merkle_root": "8edf1e1a3eb07dd47c08404c9ed92c4d1cf191688acf1ea6accda0590c98f95c",
+      "index": 34,
+      "timestamp": 1791166809.5234103,
+      "previous_hash": "242366b3801e92c9319defd732a53da2ed6d7ddd744c859dd7927f1566f249fe",
+      "merkle_root": "59891d4a4779b0d6ccf9f5d1c0bf89c4ff652e93a3a766a5bd0665d2deff676c",
       "validator_node": "BorderPolice-Node",
       "nonce": 0,
-      "hash": "1a0dd12e0cdac614ea4a82770577ccbc65e6a5ce3498d6fd49cf2d26bd02ffc0",
+      "hash": "6d221c10b4722518f795f401bdf864151d371ba7713bc6869f1672d6dc3ba6e2",
       "transactions": [
         {
           "type": "INTRUSION_EVIDENCE",
@@ -628,11 +755,11 @@
           "camera_signature": "a3ee97f7bb68e377026df335bef01d8bee25a414eeb7470e0a3a97bbb34e3ed71fba41f1d54a291144bc5fe749b86f8ef8c3c8c12fff0dd135a4d2e9a7a6900e",
           "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
           "zone_id": "ZONE-ALPHA-BORDER",
-          "evidence_file": "evidence/intrusion_CAM-001_track_5_frame_0331.jpg",
+          "evidence_file": "/home/akhil/CCTV-blockchain/evidence/intrusion_CAM-001_track_5_frame_0331.jpg",
           "detection_status": "INTRUSION_DETECTED",
           "camera_verified": true,
           "model_verified": true,
-          "recorded_at": 1790754346.7718365,
+          "recorded_at": 1791166809.5232813,
           "reporting_node": "BorderPolice-Node"
         }
       ]
@@ -645,7 +772,7 @@
       "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAKYLYZ0Ysco/+j+IsOpEVXWi8mMeBOMVaDtk2/Lr8nVs=\n-----END PUBLIC KEY-----\n",
       "location": "Sector-4 North Ridge Perimeter Post",
       "registered_by": "BorderPolice-Node",
-      "timestamp": 1790754101.2730327,
+      "timestamp": 1791166582.2938263,
       "status": "ACTIVE"
     }
   },
@@ -657,7 +784,7 @@
       "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
       "version": "v1.0-Production",
       "authorized_by": "Judiciary-Node",
-      "timestamp": 1790754101.7109785,
+      "timestamp": 1791166582.4947195,
       "status": "VERIFIED_ACTIVE"
     }
   },
@@ -670,7 +797,7 @@
       "organization": "Border Security Force",
       "exemption_active": true,
       "assigned_track_id": 6,
-      "timestamp": 1790754101.7542753,
+      "timestamp": 1791166582.5247834,
       "updated_by": "BorderPolice-Node"
     },
     "BP-OFFICER-702": {
@@ -697,15 +824,16 @@
       "camera_signature": "c251c185679573ffae6065dba0f61348de67a5d90f1d549cc5f4714408b82c25c23eac4e415e9021f3075359d3cc5257ad3b96b3dca10b9ea6450501a46bb002",
       "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
       "zone_id": "ZONE-ALPHA-BORDER",
-      "evidence_file": "evidence/intrusion_CAM-001_track_3_frame_0229.jpg",
-      "detection_status": "INTRUSION_DETECTED",
+      "evidence_file": "/home/akhil/CCTV-blockchain/evidence/intrusion_CAM-001_track_3_frame_0229.jpg",
+      "detection_status": "NO_INTRUSION_DETECTED",
       "camera_verified": true,
       "model_verified": true,
-      "recorded_at": 1790754268.318041,
+      "recorded_at": 1791166737.2356913,
       "reporting_node": "BorderPolice-Node",
-      "block_index": 26,
-      "block_hash": "6b7275c0498aae43d7f2824782064024d3106504b2bae11fc1993a7526a03e70",
-      "is_tampered": false
+      "block_index": 32,
+      "block_hash": "33a142bc22a1dde6e0146f6dce8ec24d66d23a237c84e7c02c1d902c324f678e",
+      "is_tampered": true,
+      "tamper_note": "TAMPERED: Altered to NO INTRUSION DETECTED to conceal breach"
     },
     "INTRUSION-DET-002": {
       "type": "INTRUSION_EVIDENCE",
@@ -718,15 +846,14 @@
       "camera_signature": "d4d2826522d5c7f75482af62f42974a3975752a4840c92e96cedea9a40fe73f1a24a08e606053e5ffefa5d02baa4bf6c3bf1e44c942115ccad2b41d17a18ce04",
       "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
       "zone_id": "ZONE-ALPHA-BORDER",
-      "evidence_file": "evidence/intrusion_CAM-001_track_4_frame_0248.jpg",
+      "evidence_file": "/home/akhil/CCTV-blockchain/evidence/intrusion_CAM-001_track_4_frame_0248.jpg",
       "detection_status": "INTRUSION_DETECTED",
       "camera_verified": true,
       "model_verified": true,
-      "recorded_at": 1790754283.903002,
+      "recorded_at": 1791166749.6304522,
       "reporting_node": "BorderPolice-Node",
-      "block_index": 27,
-      "block_hash": "51a55e6afe664617e4e5ce14f3bf3b9876b4e2f7c62cee04264bf0f1dd55f600",
-      "is_tampered": false
+      "block_index": 33,
+      "block_hash": "242366b3801e92c9319defd732a53da2ed6d7ddd744c859dd7927f1566f249fe"
     },
     "INTRUSION-DET-003": {
       "type": "INTRUSION_EVIDENCE",
@@ -739,15 +866,14 @@
       "camera_signature": "a3ee97f7bb68e377026df335bef01d8bee25a414eeb7470e0a3a97bbb34e3ed71fba41f1d54a291144bc5fe749b86f8ef8c3c8c12fff0dd135a4d2e9a7a6900e",
       "model_hash": "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef",
       "zone_id": "ZONE-ALPHA-BORDER",
-      "evidence_file": "evidence/intrusion_CAM-001_track_5_frame_0331.jpg",
+      "evidence_file": "/home/akhil/CCTV-blockchain/evidence/intrusion_CAM-001_track_5_frame_0331.jpg",
       "detection_status": "INTRUSION_DETECTED",
       "camera_verified": true,
       "model_verified": true,
-      "recorded_at": 1790754346.7718365,
+      "recorded_at": 1791166809.5232813,
       "reporting_node": "BorderPolice-Node",
-      "block_index": 28,
-      "block_hash": "1a0dd12e0cdac614ea4a82770577ccbc65e6a5ce3498d6fd49cf2d26bd02ffc0",
-      "is_tampered": false
+      "block_index": 34,
+      "block_hash": "6d221c10b4722518f795f401bdf864151d371ba7713bc6869f1672d6dc3ba6e2"
     }
   },
   "audit_logs": [
@@ -1758,7 +1884,232 @@
       "details": "Intrusion INTRUSION-DET-001 detection altered from 'NO_INTRUSION_DETECTED' to 'NO_INTRUSION_DETECTED' (Concealment attempt)",
       "prev_log_hash": "a6e1b3bada93e96bbdc993c05d08dd5edb4207cf40a6f2cb7d808ed18ad1325b",
       "entry_hash": "087b37a6dc24147b0c70eb9f436979087b57bba9613ec78b674ff549dc0c2e68"
+    },
+    {
+      "audit_id": "AUDIT-1791145365718-65",
+      "timestamp": 1791145365.7189193,
+      "accessor_node": "BorderPolice-Node",
+      "accessor_identity": "BorderPolice-Node",
+      "action": "CAMERA_REGISTRATION",
+      "target_id": "CAM-001",
+      "status": "SUCCESS",
+      "details": "Camera CAM-001 registered at Sector-4 North Ridge Perimeter Post",
+      "prev_log_hash": "4efe790057c4287a659728ec3850d42b8013e74d400640072ef8f6e4a209c46e",
+      "entry_hash": "e070eed61515f92407c9104ee7d6237597b55868303116313da3d6fa3781ca98"
+    },
+    {
+      "audit_id": "AUDIT-1791145367270-74",
+      "timestamp": 1791145367.2702062,
+      "accessor_node": "Judiciary-Node",
+      "accessor_identity": "Judiciary-Node",
+      "action": "MODEL_REGISTRATION",
+      "target_id": "LLVIP-BORDER-YOLO",
+      "status": "SUCCESS",
+      "details": "Model BorderGuard-YOLOv8-LLVIP (hash: b333639bc8d8343b...) anchored by Judiciary-Node",
+      "prev_log_hash": "e070eed61515f92407c9104ee7d6237597b55868303116313da3d6fa3781ca98",
+      "entry_hash": "5c3b3a77b3df6ccffa084c34a6e0b79a757fb0173658c4771dac03b2a6087453"
+    },
+    {
+      "audit_id": "AUDIT-1791145367361-67",
+      "timestamp": 1791145367.3611455,
+      "accessor_node": "BorderPolice-Node",
+      "accessor_identity": "BorderPolice-Node",
+      "action": "PERSONNEL_AUTHORIZATION",
+      "target_id": "BP-OFFICER-701",
+      "status": "SUCCESS",
+      "details": "Authorized personnel Sub-Inspector Vikram Singh (Border Patrol Officer) access status set to True",
+      "prev_log_hash": "5c3b3a77b3df6ccffa084c34a6e0b79a757fb0173658c4771dac03b2a6087453",
+      "entry_hash": "51d28bf97a98e0b37e0d0cade33e3bd37ec590ddea36e920f3417f29e503b713"
+    },
+    {
+      "audit_id": "AUDIT-1791166582297-68",
+      "timestamp": 1791166582.2976632,
+      "accessor_node": "BorderPolice-Node",
+      "accessor_identity": "BorderPolice-Node",
+      "action": "CAMERA_REGISTRATION",
+      "target_id": "CAM-001",
+      "status": "SUCCESS",
+      "details": "Camera CAM-001 registered at Sector-4 North Ridge Perimeter Post",
+      "prev_log_hash": "51d28bf97a98e0b37e0d0cade33e3bd37ec590ddea36e920f3417f29e503b713",
+      "entry_hash": "1c61286eaecfbe131d0199456b6f115533ba4093be2a204038130674cb6d0f15"
+    },
+    {
+      "audit_id": "AUDIT-1791166582499-77",
+      "timestamp": 1791166582.4993994,
+      "accessor_node": "Judiciary-Node",
+      "accessor_identity": "Judiciary-Node",
+      "action": "MODEL_REGISTRATION",
+      "target_id": "LLVIP-BORDER-YOLO",
+      "status": "SUCCESS",
+      "details": "Model BorderGuard-YOLOv8-LLVIP (hash: b333639bc8d8343b...) anchored by Judiciary-Node",
+      "prev_log_hash": "1c61286eaecfbe131d0199456b6f115533ba4093be2a204038130674cb6d0f15",
+      "entry_hash": "26e30dee381a4df8785c0ede35e4fa2c47b5159d58555a9a2e9cf63eeeef93e7"
+    },
+    {
+      "audit_id": "AUDIT-1791166582529-70",
+      "timestamp": 1791166582.529419,
+      "accessor_node": "BorderPolice-Node",
+      "accessor_identity": "BorderPolice-Node",
+      "action": "PERSONNEL_AUTHORIZATION",
+      "target_id": "BP-OFFICER-701",
+      "status": "SUCCESS",
+      "details": "Authorized personnel Sub-Inspector Vikram Singh (Border Patrol Officer) access status set to True",
+      "prev_log_hash": "26e30dee381a4df8785c0ede35e4fa2c47b5159d58555a9a2e9cf63eeeef93e7",
+      "entry_hash": "ca4c273323abbfec46daccdc62d27bfffe0d2c5afd2b28bf664e3308ad30bebc"
+    },
+    {
+      "audit_id": "AUDIT-1791166737242-71",
+      "timestamp": 1791166737.242296,
+      "accessor_node": "BorderPolice-Node",
+      "accessor_identity": "AI-Inference-Engine",
+      "action": "RECORD_INTRUSION",
+      "target_id": "INTRUSION-DET-001",
+      "status": "ANCHORED_ON_CHAIN",
+      "details": "Intrusion INTRUSION-DET-001 (Track #3) committed into Block #32",
+      "prev_log_hash": "ca4c273323abbfec46daccdc62d27bfffe0d2c5afd2b28bf664e3308ad30bebc",
+      "entry_hash": "63465afa45ac8539b15c91b27356ebda0864a113002d44b696765902670cb1d2"
+    },
+    {
+      "audit_id": "AUDIT-1791166749637-72",
+      "timestamp": 1791166749.637662,
+      "accessor_node": "BorderPolice-Node",
+      "accessor_identity": "AI-Inference-Engine",
+      "action": "RECORD_INTRUSION",
+      "target_id": "INTRUSION-DET-002",
+      "status": "ANCHORED_ON_CHAIN",
+      "details": "Intrusion INTRUSION-DET-002 (Track #4) committed into Block #33",
+      "prev_log_hash": "63465afa45ac8539b15c91b27356ebda0864a113002d44b696765902670cb1d2",
+      "entry_hash": "e668f9265431cd6a148a4b730c582bcf98d10c28c6347ec2b7a64e3a7d47942a"
+    },
+    {
+      "audit_id": "AUDIT-1791166809529-73",
+      "timestamp": 1791166809.5297728,
+      "accessor_node": "BorderPolice-Node",
+      "accessor_identity": "AI-Inference-Engine",
+      "action": "RECORD_INTRUSION",
+      "target_id": "INTRUSION-DET-003",
+      "status": "ANCHORED_ON_CHAIN",
+      "details": "Intrusion INTRUSION-DET-003 (Track #5) committed into Block #34",
+      "prev_log_hash": "e668f9265431cd6a148a4b730c582bcf98d10c28c6347ec2b7a64e3a7d47942a",
+      "entry_hash": "49d7177ebdab3df3357caba454b0e7010ef22973f46a99f5b846981da0fdfd6b"
+    },
+    {
+      "audit_id": "AUDIT-1791166923588-93",
+      "timestamp": 1791166923.5887084,
+      "accessor_node": "StatePolice-Node",
+      "accessor_identity": "Unauthorized-Insider",
+      "action": "ALTER_INTRUSION_RECORD",
+      "target_id": "INTRUSION-DET-001",
+      "status": "UNAUTHORIZED_OVERWRITE",
+      "details": "Intrusion INTRUSION-DET-001 detection altered from 'INTRUSION_DETECTED' to 'NO_INTRUSION_DETECTED' (Concealment attempt)",
+      "prev_log_hash": "49d7177ebdab3df3357caba454b0e7010ef22973f46a99f5b846981da0fdfd6b",
+      "entry_hash": "a6dd67dc281ddace0a6e89dfc05f43dd63a92f837484453b9c36c27e900c4c45"
+    },
+    {
+      "audit_id": "AUDIT-1791166923643-94",
+      "timestamp": 1791166923.6430295,
+      "accessor_node": "StatePolice-Node",
+      "accessor_identity": "Consensus-Monitor",
+      "action": "TAMPER_DETECTED",
+      "target_id": "BLOCK-32",
+      "status": "TAMPER_ALARM_RAISED",
+      "details": "CRITICAL INTEGRITY BREACH: Block #32 hash disparity detected! Block modified on BorderPolice-Node or local ledger.",
+      "prev_log_hash": "a6dd67dc281ddace0a6e89dfc05f43dd63a92f837484453b9c36c27e900c4c45",
+      "entry_hash": "12e8c38f5f2cf7d43df6106b881f15168adcee2c1ac33d01836a542248913694"
+    },
+    {
+      "audit_id": "AUDIT-1791166923652-95",
+      "timestamp": 1791166923.652021,
+      "accessor_node": "StatePolice-Node",
+      "accessor_identity": "Consensus-Monitor",
+      "action": "INTRUSION_TAMPER_DETECTED",
+      "target_id": "INTRUSION-DET-001",
+      "status": "TAMPER_ALARM_RAISED",
+      "details": "CRITICAL INTEGRITY BREACH: Intrusion INTRUSION-DET-001 status disparity! Local node (StatePolice-Node) has 'NO INTRUSION DETECTED' while authentic consensus node (BorderPolice-Node) has 'INTRUSION DETECTED'. Concealment attempt flagged by consensus.",
+      "prev_log_hash": "12e8c38f5f2cf7d43df6106b881f15168adcee2c1ac33d01836a542248913694",
+      "entry_hash": "8b61259a3d5ec3c277a5ce73f722e2af39c1855b2f983a1ad510bf4015176288"
+    },
+    {
+      "audit_id": "AUDIT-1791166923669-96",
+      "timestamp": 1791166923.6693263,
+      "accessor_node": "StatePolice-Node",
+      "accessor_identity": "Consensus-Monitor",
+      "action": "TAMPER_DETECTED",
+      "target_id": "BLOCK-32",
+      "status": "TAMPER_ALARM_RAISED",
+      "details": "CRITICAL INTEGRITY BREACH: Block #32 hash disparity detected! Block modified on Judiciary-Node or local ledger.",
+      "prev_log_hash": "8b61259a3d5ec3c277a5ce73f722e2af39c1855b2f983a1ad510bf4015176288",
+      "entry_hash": "255f70a970d57555fc7916a6062e7bd3ddafbb2d0d9552645bc81aafc2d2fd68"
+    },
+    {
+      "audit_id": "AUDIT-1791166923679-97",
+      "timestamp": 1791166923.6796708,
+      "accessor_node": "StatePolice-Node",
+      "accessor_identity": "Consensus-Monitor",
+      "action": "INTRUSION_TAMPER_DETECTED",
+      "target_id": "INTRUSION-DET-001",
+      "status": "TAMPER_ALARM_RAISED",
+      "details": "CRITICAL INTEGRITY BREACH: Intrusion INTRUSION-DET-001 status disparity! Local node (StatePolice-Node) has 'NO INTRUSION DETECTED' while authentic consensus node (Judiciary-Node) has 'INTRUSION DETECTED'. Concealment attempt flagged by consensus.",
+      "prev_log_hash": "255f70a970d57555fc7916a6062e7bd3ddafbb2d0d9552645bc81aafc2d2fd68",
+      "entry_hash": "abd5d5015961f2861392d23a7e2adfcd1bce5404c30f87d48e0cdac4d7775ed3"
     }
   ],
-  "security_alerts": []
+  "security_alerts": [
+    {
+      "alert_id": "TAMPER-ALERT-BLK-1791166923643-32",
+      "timestamp": 1791166923.6430094,
+      "severity": "CRITICAL",
+      "target_type": "BLOCK",
+      "block_index": 32,
+      "local_node": "StatePolice-Node",
+      "remote_node": "BorderPolice-Node",
+      "local_hash": "0e6389c3f0386bd15460f20a6699c56ffc15df2c4b5e98f397d1932dbbf58612",
+      "remote_hash": "33a142bc22a1dde6e0146f6dce8ec24d66d23a237c84e7c02c1d902c324f678e",
+      "message": "CRITICAL INTEGRITY BREACH: Block #32 hash disparity detected! Block modified on BorderPolice-Node or local ledger.",
+      "detected_by": [
+        "StatePolice-Node"
+      ]
+    },
+    {
+      "alert_id": "TAMPER-ALERT-INTRUSION-1791166923651-INTRUSION-DET-001",
+      "timestamp": 1791166923.6519272,
+      "severity": "CRITICAL",
+      "target_type": "INTRUSION_CONCEALMENT",
+      "event_id": "INTRUSION-DET-001",
+      "local_node": "StatePolice-Node",
+      "remote_node": "BorderPolice-Node",
+      "message": "CRITICAL INTEGRITY BREACH: Intrusion INTRUSION-DET-001 status disparity! Local node (StatePolice-Node) has 'NO INTRUSION DETECTED' while authentic consensus node (BorderPolice-Node) has 'INTRUSION DETECTED'. Concealment attempt flagged by consensus.",
+      "detected_by": [
+        "StatePolice-Node"
+      ]
+    },
+    {
+      "alert_id": "TAMPER-ALERT-BLK-1791166923669-32",
+      "timestamp": 1791166923.6693072,
+      "severity": "CRITICAL",
+      "target_type": "BLOCK",
+      "block_index": 32,
+      "local_node": "StatePolice-Node",
+      "remote_node": "Judiciary-Node",
+      "local_hash": "0e6389c3f0386bd15460f20a6699c56ffc15df2c4b5e98f397d1932dbbf58612",
+      "remote_hash": "33a142bc22a1dde6e0146f6dce8ec24d66d23a237c84e7c02c1d902c324f678e",
+      "message": "CRITICAL INTEGRITY BREACH: Block #32 hash disparity detected! Block modified on Judiciary-Node or local ledger.",
+      "detected_by": [
+        "StatePolice-Node"
+      ]
+    },
+    {
+      "alert_id": "TAMPER-ALERT-INTRUSION-1791166923679-INTRUSION-DET-001",
+      "timestamp": 1791166923.6796498,
+      "severity": "CRITICAL",
+      "target_type": "INTRUSION_CONCEALMENT",
+      "event_id": "INTRUSION-DET-001",
+      "local_node": "StatePolice-Node",
+      "remote_node": "Judiciary-Node",
+      "message": "CRITICAL INTEGRITY BREACH: Intrusion INTRUSION-DET-001 status disparity! Local node (StatePolice-Node) has 'NO INTRUSION DETECTED' while authentic consensus node (Judiciary-Node) has 'INTRUSION DETECTED'. Concealment attempt flagged by consensus.",
+      "detected_by": [
+        "StatePolice-Node"
+      ]
+    }
+  ]
 }

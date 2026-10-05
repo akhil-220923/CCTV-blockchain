@@ -20,15 +20,24 @@ from blockchain.node import initialize_three_node_network, BlockchainNode
 from blockchain.crypto_utils import calculate_file_sha256, calculate_data_sha256
 
 app = Flask(__name__, static_folder="static")
-CORS(app)
+cors_origins = os.environ.get("CORS_ORIGIN", "*")
+CORS(app, resources={r"/*": {"origins": cors_origins.split(",") if "," in cors_origins else cors_origins}})
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-EVIDENCE_DIR = os.path.join(BASE_DIR, "evidence")
-OUTPUT_VIDEO_PATH = os.path.join(BASE_DIR, "ai_pipeline", "output", "annotated_border_surveillance.mp4")
-RAW_VIDEO_PATH = os.path.join(BASE_DIR, "video", "test_cctv.mp4")
+EVIDENCE_DIR = os.environ.get("EVIDENCE_PATH") or os.environ.get("EVIDENCE_DIR") or os.path.join(BASE_DIR, "evidence")
+EVIDENCE_DIR = EVIDENCE_DIR if os.path.isabs(EVIDENCE_DIR) else os.path.join(BASE_DIR, EVIDENCE_DIR)
+
+OUTPUT_VIDEO_PATH = os.environ.get("OUTPUT_VIDEO_PATH") or os.path.join(BASE_DIR, "ai_pipeline", "output", "annotated_border_surveillance.mp4")
+OUTPUT_VIDEO_PATH = OUTPUT_VIDEO_PATH if os.path.isabs(OUTPUT_VIDEO_PATH) else os.path.join(BASE_DIR, OUTPUT_VIDEO_PATH)
+
+RAW_VIDEO_PATH = os.environ.get("RAW_VIDEO_PATH") or os.path.join(BASE_DIR, "video", "test_cctv.mp4")
+RAW_VIDEO_PATH = RAW_VIDEO_PATH if os.path.isabs(RAW_VIDEO_PATH) else os.path.join(BASE_DIR, RAW_VIDEO_PATH)
+
+BLOCKCHAIN_DATA_DIR = os.environ.get("BLOCKCHAIN_DATA_PATH") or os.environ.get("BLOCKCHAIN_DATA_DIR") or os.path.join(BASE_DIR, "blockchain_data")
+BLOCKCHAIN_DATA_DIR = BLOCKCHAIN_DATA_DIR if os.path.isabs(BLOCKCHAIN_DATA_DIR) else os.path.join(BASE_DIR, BLOCKCHAIN_DATA_DIR)
 
 # Initialize the 3-node blockchain network
-NODES = initialize_three_node_network()
+NODES = initialize_three_node_network(storage_dir=BLOCKCHAIN_DATA_DIR)
 border_police = NODES["border_police"]
 state_police = NODES["state_police"]
 judiciary = NODES["judiciary"]
@@ -55,7 +64,19 @@ if not has_cam:
     )
 
 # Compute Model Hash and Auto-register on Judiciary Node
-model_path = os.path.join(BASE_DIR, "ai_pipeline", "epoch_02.pt")
+model_path = os.environ.get("MODEL_PATH") or os.path.join(BASE_DIR, "ai_pipeline", "epoch_02.pt")
+model_path = model_path if os.path.isabs(model_path) else os.path.join(BASE_DIR, model_path)
+if not os.path.exists(model_path) and os.path.exists(os.path.dirname(model_path)):
+    parts = sorted([os.path.join(os.path.dirname(model_path), f) for f in os.listdir(os.path.dirname(model_path)) if f.startswith(os.path.basename(model_path) + ".part_")])
+    if parts:
+        try:
+            with open(model_path, "wb") as out_f:
+                for p in parts:
+                    with open(p, "rb") as in_f:
+                        shutil.copyfileobj(in_f, out_f)
+        except Exception:
+            pass
+
 model_hash = calculate_file_sha256(model_path) if os.path.exists(model_path) else "b333639bc8d8343bb61ae10fa58311515b8f0f3545b580d0ff0ccc31464e9bef"
 
 has_model = "LLVIP-BORDER-YOLO" in judiciary.ledger.models or any(

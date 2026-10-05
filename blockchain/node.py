@@ -127,7 +127,7 @@ class BlockchainNode:
         }
 
 
-def initialize_three_node_network(storage_dir: str = "blockchain_data") -> Dict[str, BlockchainNode]:
+def initialize_three_node_network(storage_dir: Optional[str] = None) -> Dict[str, BlockchainNode]:
     """
     Factory function to initialize the 3 distinct authority nodes:
     1. Border Police Node

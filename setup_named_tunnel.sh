@@ -44,24 +44,9 @@ tunnel: $TUNNEL_ID
 credentials-file: $HOME/.cloudflared/${TUNNEL_ID}.json
 
 ingress:
-  # 1. Backend REST API
+  # Route all traffic through Caddy Unified Reverse Proxy
   - hostname: $DOMAIN
-    path: /api/*
-    service: http://127.0.0.1:5000
-
-  # 2. Live CCTV Streams & Processed Video Playback
-  - hostname: $DOMAIN
-    path: /video/*
-    service: http://127.0.0.1:5000
-
-  # 3. Forensic Evidence Snapshots
-  - hostname: $DOMAIN
-    path: /evidence/*
-    service: http://127.0.0.1:5000
-
-  # 4. Web Command Center (React 19 + TanStack Start UI)
-  - hostname: $DOMAIN
-    service: http://127.0.0.1:3000
+    service: http://127.0.0.1:8080
 
   # Default Fallback
   - service: http_status:404

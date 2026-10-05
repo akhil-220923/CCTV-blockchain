@@ -20,8 +20,13 @@ class BlockchainLedger:
     Intrusion Evidence Records, and Immutable Audit Logs.
     """
 
-    def __init__(self, node_id: str = "BorderPolice-Node", storage_dir: str = "blockchain_data"):
+    def __init__(self, node_id: str = "BorderPolice-Node", storage_dir: str = None):
         self.node_id = node_id
+        if storage_dir is None:
+            storage_dir = os.environ.get("BLOCKCHAIN_DATA_DIR") or os.environ.get("BLOCKCHAIN_DATA_PATH") or "blockchain_data"
+        if not os.path.isabs(storage_dir):
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            storage_dir = os.path.join(base_dir, storage_dir)
         self.storage_dir = os.path.join(storage_dir, node_id)
         os.makedirs(self.storage_dir, exist_ok=True)
         self.ledger_file = os.path.join(self.storage_dir, "ledger.json")

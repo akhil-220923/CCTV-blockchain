@@ -26,6 +26,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application source code
 COPY . .
 
+# Reassemble split model weights if needed
+RUN if [ ! -f "ai_pipeline/epoch_02.pt" ] && [ -f "ai_pipeline/epoch_02.pt.part_aa" ]; then \
+        cat ai_pipeline/epoch_02.pt.part_* > ai_pipeline/epoch_02.pt; \
+    fi
+
 # Expose backend API and streaming port
 EXPOSE 5000
 
