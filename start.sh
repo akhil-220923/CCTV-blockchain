@@ -65,4 +65,9 @@ CADDY_CONF="${CADDYFILE_PATH:-/app/Caddyfile}"
 if [ ! -f "$CADDY_CONF" ] && [ -f "./Caddyfile" ]; then
     CADDY_CONF="./Caddyfile"
 fi
-exec caddy run --config "$CADDY_CONF" --adapter caddyfile
+
+CADDY_BIN=$(command -v caddy || echo "/usr/local/bin/caddy")
+if [ -f "$CADDY_BIN" ] && [ ! -x "$CADDY_BIN" ]; then
+    chmod 755 "$CADDY_BIN" 2>/dev/null || true
+fi
+exec "$CADDY_BIN" run --config "$CADDY_CONF" --adapter caddyfile

@@ -24,8 +24,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install official static Caddy binary from caddy:alpine
-COPY --from=caddy:alpine /usr/bin/caddy /usr/local/bin/caddy
+# Install official standalone Caddy binary (multi-arch, zero setcap/xattr restrictions)
+RUN ARCH=$(dpkg --print-architecture) \
+    && curl -fsSL "https://github.com/caddyserver/caddy/releases/download/v2.8.4/caddy_2.8.4_linux_${ARCH}.tar.gz" \
+    | tar -xz -C /usr/local/bin caddy \
+    && chmod 755 /usr/local/bin/caddy \
+    && /usr/local/bin/caddy version
 
 # Install Node.js 22 LTS runtime to execute SSR server
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
