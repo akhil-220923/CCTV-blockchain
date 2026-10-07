@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: sih-182-tracevasp
+    name: cctv-blockchain
     env: docker
     dockerfilePath: Dockerfile
     region: oregon
@@ -10,6 +10,8 @@ services:
     envVars:
       - key: PORT
         value: 10000
+      - key: NODE_ENV
+        value: production
       - key: CORS_ORIGIN
         value: "*"
       - key: PYTHONUNBUFFERED

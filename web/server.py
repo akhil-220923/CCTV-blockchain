@@ -20,8 +20,9 @@ from blockchain.node import initialize_three_node_network, BlockchainNode
 from blockchain.crypto_utils import calculate_file_sha256, calculate_data_sha256
 
 app = Flask(__name__, static_folder="static")
-cors_origins = os.environ.get("CORS_ORIGIN", "*")
-CORS(app, resources={r"/*": {"origins": cors_origins.split(",") if "," in cors_origins else cors_origins}})
+cors_origins = os.environ.get("FRONTEND_URL") or os.environ.get("CORS_ORIGIN", "*")
+origins_list = [o.strip() for o in cors_origins.split(",") if o.strip()] if "," in cors_origins else cors_origins
+CORS(app, resources={r"/*": {"origins": origins_list}})
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EVIDENCE_DIR = os.environ.get("EVIDENCE_PATH") or os.environ.get("EVIDENCE_DIR") or os.path.join(BASE_DIR, "evidence")

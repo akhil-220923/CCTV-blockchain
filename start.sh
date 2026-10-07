@@ -44,12 +44,25 @@ fi
 
 # 5. Wait for internal backend and frontend to initialize
 echo "[IBVAP System] Waiting for internal services to be ready..."
-sleep 4
+for i in $(seq 1 30); do
+    if curl -s http://127.0.0.1:5001/health >/dev/null 2>&1; then
+        echo "[IBVAP System] Backend is ready and responding after ${i}s."
+        break
+    fi
+    sleep 1
+done
 
 # 6. Launch Caddy Reverse Proxy as the foreground process on public $PORT
 PUBLIC_PORT="${PORT:-8080}"
 echo "[IBVAP System] Launching Caddy Reverse Proxy on public port $PUBLIC_PORT..."
 export BACKEND_TARGET="http://127.0.0.1:5001"
 export FRONTEND_TARGET="http://127.0.0.1:3000"
-export FRONTEND_PUBLIC="/app/frontend/.output/public"
-exec caddy run --config /app/Caddyfile --adapter caddyfile
+export FRONTEND_PUBLIC="${FRONTEND_PUBLIC:-/app/frontend/.output/public}"
+if [ ! -d "$FRONTEND_PUBLIC" ] && [ -d "./frontend/.output/public" ]; then
+    export FRONTEND_PUBLIC="./frontend/.output/public"
+fi
+CADDY_CONF="${CADDYFILE_PATH:-/app/Caddyfile}"
+if [ ! -f "$CADDY_CONF" ] && [ -f "./Caddyfile" ]; then
+    CADDY_CONF="./Caddyfile"
+fi
+exec caddy run --config "$CADDY_CONF" --adapter caddyfile

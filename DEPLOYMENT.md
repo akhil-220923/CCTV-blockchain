@@ -11,7 +11,7 @@ This document provides exact, step-by-step instructions to deploy, verify, maint
                                      |
                                      v
                    PERMANENT CLOUD HTTPS PUBLIC ENDPOINT
-                 (e.g., https://sih-182-tracevasp.onrender.com)
+                 (e.g., https://cctv-blockchain.onrender.com)
                                      |
                                      v
                     CADDY REVERSE PROXY (:{\$PORT:8080})
@@ -47,7 +47,7 @@ Deploy directly from GitHub repository `https://github.com/akhil-220923/CCTV-blo
 2. Select your Web Service (or click **New +** -> **Web Service**).
 3. Connect repository: `https://github.com/akhil-220923/CCTV-blockchain` (Branch: `main`).
 4. Configuration parameters:
-   - **Name:** `sih-182-tracevasp` (or any custom service name)
+   - **Name:** `cctv-blockchain` (or any custom service name)
    - **Environment:** `Docker`
    - **Dockerfile Path:** `Dockerfile`
    - **Docker Context:** `.`
