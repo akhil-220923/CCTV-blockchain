@@ -34,40 +34,18 @@ else
     (cd /app/frontend && npm run dev -- --host 127.0.0.1 --port 3000) &
 fi
 
-# 4. Launch Python Gunicorn Backend on internal port 5001
-echo "[IBVAP System] Launching Gunicorn WSGI Backend on internal port 5001..."
-if command -v gunicorn >/dev/null 2>&1; then
-    (gunicorn --bind 127.0.0.1:5001 --workers 1 --threads 8 --timeout 120 web.server:app) &
-else
-    (PORT=5001 HOST=127.0.0.1 python3 web/server.py) &
-fi
-
-# 5. Wait for internal backend and frontend to initialize
-echo "[IBVAP System] Waiting for internal services to be ready..."
+# 4. Wait for internal React SSR server to be ready on port 3000
+echo "[IBVAP System] Waiting for React SSR server to be ready on port 3000..."
 for i in $(seq 1 30); do
-    if curl -s http://127.0.0.1:5001/health >/dev/null 2>&1; then
-        echo "[IBVAP System] Backend is ready and responding after ${i}s."
+    if curl -s http://127.0.0.1:3000/ >/dev/null 2>&1; then
+        echo "[IBVAP System] React SSR is ready after ${i}s."
         break
     fi
     sleep 1
 done
 
-# 6. Launch Caddy Reverse Proxy as the foreground process on public $PORT
-PUBLIC_PORT="${PORT:-8080}"
-echo "[IBVAP System] Launching Caddy Reverse Proxy on public port $PUBLIC_PORT..."
-export BACKEND_TARGET="http://127.0.0.1:5001"
-export FRONTEND_TARGET="http://127.0.0.1:3000"
-export FRONTEND_PUBLIC="${FRONTEND_PUBLIC:-/app/frontend/.output/public}"
-if [ ! -d "$FRONTEND_PUBLIC" ] && [ -d "./frontend/.output/public" ]; then
-    export FRONTEND_PUBLIC="./frontend/.output/public"
-fi
-CADDY_CONF="${CADDYFILE_PATH:-/app/Caddyfile}"
-if [ ! -f "$CADDY_CONF" ] && [ -f "./Caddyfile" ]; then
-    CADDY_CONF="./Caddyfile"
-fi
-
-CADDY_BIN=$(command -v caddy || echo "/usr/local/bin/caddy")
-if [ -f "$CADDY_BIN" ] && [ ! -x "$CADDY_BIN" ]; then
-    chmod 755 "$CADDY_BIN" 2>/dev/null || true
-fi
-exec "$CADDY_BIN" run --config "$CADDY_CONF" --adapter caddyfile
+# 5. Launch Unified Python/Gunicorn Production Gateway on 0.0.0.0:$PUBLIC_PORT
+PUBLIC_PORT="${PORT:-10000}"
+echo "[IBVAP System] Launching Unified Production Gateway on 0.0.0.0:$PUBLIC_PORT..."
+export FRONTEND_URL="http://127.0.0.1:3000"
+exec gunicorn --bind "0.0.0.0:${PUBLIC_PORT}" --workers 1 --threads 12 --timeout 120 web.server:app

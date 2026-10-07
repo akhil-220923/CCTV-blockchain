@@ -24,12 +24,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install official standalone Caddy binary (multi-arch, zero setcap/xattr restrictions)
-RUN ARCH=$(dpkg --print-architecture) \
-    && curl -fsSL "https://github.com/caddyserver/caddy/releases/download/v2.8.4/caddy_2.8.4_linux_${ARCH}.tar.gz" \
-    | tar -xz -C /usr/local/bin caddy \
-    && chmod 755 /usr/local/bin/caddy \
-    && /usr/local/bin/caddy version
 
 # Install Node.js 22 LTS runtime to execute SSR server
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
@@ -62,13 +56,13 @@ RUN if [ ! -f "ai_pipeline/epoch_02.pt" ] && [ -f "ai_pipeline/epoch_02.pt.part_
 RUN chmod +x /app/start.sh
 
 # Environment defaults
-ENV PORT=8080 \
+ENV PORT=10000 \
     HOST=0.0.0.0
 
-EXPOSE 8080 5000 3000
+EXPOSE 10000 5000 3000
 
-# Health check verifies that Caddy and backend respond on $PORT
+# Health check verifies that Gunicorn gateway responds on $PORT
 HEALTHCHECK --interval=20s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -f http://127.0.0.1:${PORT:-8080}/health || exit 1
+    CMD curl -f http://127.0.0.1:${PORT:-10000}/health || exit 1
 
 CMD ["/app/start.sh"]

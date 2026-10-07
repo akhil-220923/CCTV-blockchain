@@ -917,20 +917,51 @@ def restore_integrity():
     })
 
 
+FRONTEND_PUBLIC_DIR = os.path.join(BASE_DIR, "frontend", ".output", "public")
+
+
+@app.route("/assets/<path:filename>")
+def serve_frontend_assets(filename):
+    """Direct high-performance static asset serving with HTTP caching."""
+    assets_dir = os.path.join(FRONTEND_PUBLIC_DIR, "assets")
+    if os.path.isdir(assets_dir) and os.path.isfile(os.path.join(assets_dir, filename)):
+        response = send_from_directory(assets_dir, filename)
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
+    # Fallback to frontend server proxy
+    return index_or_frontend(f"assets/{filename}")
+
+
+@app.route("/favicon.ico")
+def serve_favicon():
+    if os.path.isfile(os.path.join(FRONTEND_PUBLIC_DIR, "favicon.ico")):
+        return send_from_directory(FRONTEND_PUBLIC_DIR, "favicon.ico")
+    return index_or_frontend("favicon.ico")
+
+
+@app.route("/robots.txt")
+def serve_robots():
+    if os.path.isfile(os.path.join(FRONTEND_PUBLIC_DIR, "robots.txt")):
+        return send_from_directory(FRONTEND_PUBLIC_DIR, "robots.txt")
+    return index_or_frontend("robots.txt")
+
+
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
 def index_or_frontend(path):
-    """Serve modern React frontend by proxying non-API/non-video requests to Node SSR (port 3000)."""
+    """Serve modern React 19 Command Center by proxying non-API requests to Node SSR (port 3000) with SPA fallback."""
     if path.startswith("api/") or path.startswith("video/") or path.startswith("evidence/"):
         return jsonify({"error": "Endpoint not found"}), 404
 
     frontend_base = os.environ.get("FRONTEND_URL", "http://127.0.0.1:3000").rstrip("/")
-    vite_url = f"{frontend_base}/{path}"
+    vite_url = f"{frontend_base}/{path}" if path else f"{frontend_base}/"
     if request.query_string:
         vite_url += f"?{request.query_string.decode('utf-8')}"
+
+    hop_by_hop = {'host', 'connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization', 'te', 'trailers', 'transfer-encoding', 'upgrade'}
+    req_headers = {key: value for (key, value) in request.headers if key.lower() not in hop_by_hop}
+
     try:
-        hop_by_hop = {'host', 'connection', 'keep-alive', 'proxy-authenticate', 'proxy-authorization', 'te', 'trailers', 'transfer-encoding', 'upgrade'}
-        req_headers = {key: value for (key, value) in request.headers if key.lower() not in hop_by_hop}
         resp = requests.request(
             method=request.method,
             url=vite_url,
@@ -941,6 +972,15 @@ def index_or_frontend(path):
             stream=True,
             timeout=10
         )
+
+        # SPA client-side fallback: if direct navigation (e.g., /dashboard, /surveillance) returns 404 from SSR, serve root route
+        if resp.status_code == 404 and not path.startswith("assets/"):
+            root_resp = requests.get(f"{frontend_base}/", headers=req_headers, timeout=10)
+            if root_resp.status_code == 200:
+                excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+                headers = [(k, v) for (k, v) in root_resp.headers.items() if k.lower() not in excluded_headers]
+                return Response(root_resp.content, 200, headers)
+
         excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
         headers = [(name, value) for (name, value) in resp.raw.headers.items()
                    if name.lower() not in excluded_headers]
